@@ -1,0 +1,75 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div th:fragment="userModal">
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">¿Quieres cerrar sesión?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                     <div class="modal-body">Seleccione Salir para terminar la sesión</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <form th:action="@{/logout}">
+                            <input type="submit" name="salir"
+                            value="Salir" class="btn btn-primary"/>
+                        </form>
+                    </div>
+             </div>
+         </div>
+        </div>
+        <div class="modal fade" id="passwordChange" tabindex="-1" role="dialog" aria-labelledby="passwordChange"
+        aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form class="modal-content" id="passWordForm">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cambio de Contraseña</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group  has-validation need-validation-pass">
+                            <label for="actualPass">Contraseña actual: </label>
+                            <input type="password" name="actualPass" class="form-control form-control-user" id="actualPass" required/>
+                            <div class="invalid-feedback" id="feedback-bad-actual">
+                               Contraseña actual incorrecta
+                            </div>
+                        </div>
+                        <div class="form-group has-validation  need-validation-pass">
+                            <label for="newPass">Nueva contraseña: </label>
+                            <input type="password" name="newPass" class="form-control form-control-user" id="newPass" required/>
+                            <div class="invalid-feedback" id="feedback-bad-new">
+                                Por favor ingrese una contraseña valida
+                            </div>
+                        </div>
+                        <div class="form-group has-validation need-validation-pass">
+                            <label for="repeatlPass">Repetir nueva contraseña: </label>
+                            <input type="password" name="repeatPass" class="form-control form-control-user" id="repeatlPass" required/>
+                            <div class="invalid-feedback">
+                                Por favor ingrese una contraseña valida
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                       
+                            <input type="submit" name="salir"
+                            value="Confirmar" id="btnChangePass" class="btn btn-primary"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/header :: header(title = 'Inicio')">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="wrapper" class="d-flex">
+        <div th:replace="fragments/sidebar :: sidebar"></div>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <div class="container-fluid p-4">
+                    <!-- Encabezado -->
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+                        <h1 class="h2">Panel de Administración</h1>
+                    </div>
+
+                    <!-- Configuración del sistema -->
+                    <!-- 
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title">Configuraciones del Sistema</h5>
+                            </div>
+                            <p class="card-text">Personalice las configuraciones del sistema según las necesidades de su
+                                empresa.</p>
+                            <div>
+                                <label for="theme-selector">Selecciona un tema:</label>
+                                <select id="theme-selector" class="form-select">
+                                    <option value="theme-light">Claro</option>
+                                    <option value="theme-dark">Oscuro</option>
+                                    <option value="theme-blue">Azul</option>
+                                    <option value="theme-green">Verde</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments/userModal :: userModal"></div>
+    <div th:replace="fragments/jsComponents :: jsScripts"></div>
+
+    <script th:inline="javascript">
+        //STOCK
+        $.ajax({
+            url: "/stockCategoria",
+            type: "GET",
+            success: function (data) {
+                const labels = [];
+                const stockValues = [];
+
+                data.forEach(item => {
+                    labels.push(item.CATEGORIA);
+                    stockValues.push(item.STOCK_TOTAL);
+                });
+
+                const ctx = document.getElementById('graficoStockCategoria').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Stock total por categoría',
+                            data: stockValues,
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            },
+            error: function (error) {
+                console.error("Error al obtener el stock por categoría:", error);
+            }
+        });
+
+        //TIPO MOVIMIENTOS
+        $.ajax({
+            url: "/tipoMovimientos",
+            type: "GET",
+            success: function (data) {
+                const labels = [];
+                const stockValues = [];
+
+                data.forEach(item => {
+                    labels.push(item.TIPO_MOVIMIENTO);
+                    stockValues.push(item.TOTAL_MOVIMIENTOS);
+                });
+
+                const ctx = document.getElementById('graficoTipoMovimientos').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Movimientos por tipo',
+                            data: stockValues,
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            },
+            error: function (error) {
+                console.error("Error al obtener el stock por categoría:", error);
+            }
+        });
+
+        //STOCK EXCESO
+        $.ajax({
+            url: "/productos/excesoStock",
+            type: "GET",
+            success: function (data) {
+                const labels = [];
+                const stockMinValues = [];
+                const stockActuValues = [];
+                const listaAlertas = $('#listaProductosExcesoStock');
+
+                let hayProductosExcesoStock = false;
+                listaAlertas.empty();
+
+                data.forEach(item => {
+                    labels.push(item.NOMBRE);
+                    //stockMinValues.push(item.STOCK_MINIMO);
+                    stockActuValues.push(item.STOCK_ACTUAL);
+
+                    // Verificar si el stock actual está por debajo del mínimo
+                    hayProductosExcesoStock = true;
+                    listaAlertas.append(`
+                            <li><strong>${item.NOMBRE}</strong>: ${item.STOCK_ACTUAL} unidades</li>`);
+
+                });
+
+                if (hayProductosExcesoStock) {
+                    $('#alertasExcesoStock').show(); // Mostrar alert solo si hay productos en la lista
+                }
+            },
+            error: function (error) {
+                console.error("Error al obtener productos con stock bajo:", error);
+            }
+        });
+
+        //STOCK BAJO
+        $.ajax({
+            url: "/productos/stockBajo",
+            type: "GET",
+            success: function (data) {
+                const labels = [];
+                const stockMinValues = [];
+                const stockActuValues = [];
+                const listaAlertas = $('#listaProductosBajoStock');
+
+                let hayProductosConBajoStock = false;
+                listaAlertas.empty();
+
+                data.forEach(item => {
+                    labels.push(item.NOMBRE);
+                    stockMinValues.push(item.STOCK_MINIMO);
+                    stockActuValues.push(item.STOCK_ACTUAL);
+
+                    // Verificar si el stock actual está por debajo del mínimo
+                    if (item.STOCK_ACTUAL < item.STOCK_MINIMO) {
+                        hayProductosConBajoStock = true;
+
+                        listaAlertas.append(`
+                            <li><strong>${item.NOMBRE}</strong>: ${item.STOCK_ACTUAL} unidades (mínimo requerido: ${item.STOCK_MINIMO})</li>`);
+                    }
+                });
+
+                if (hayProductosConBajoStock) {
+                    $('#alertasStockBajo').show(); // Mostrar alert solo si hay productos en la lista
+                }
+
+                const ctx = document.getElementById('graficoStockBajo').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Stock Mínimo',
+                                data: stockMinValues,
+                                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Stock Actual',
+                                data: stockActuValues,
+                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        indexAxis: 'y', // Esto lo convierte en barra horizontal
+                        responsive: true,
+                        scales: {
+                            x: {
+                                beginAtZero: true
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Productos con Stock por debajo del mínimo'
+                            }
+                        }
+                    }
+                });
+            },
+            error: function (error) {
+                console.error("Error al obtener productos con stock bajo:", error);
+            }
+        });
+
+        // PRODUCTOS MAS VENDIDOS
+        $.ajax({
+            url: "/inventario/productosMasVendidos",
+            type: "GET",
+            success: function (data) {
+                const labels = [];
+                const stockValues = [];
+
+                data.forEach(item => {
+                    labels.push(item.NOMBRE);
+                    stockValues.push(item.TOTAL_SALIDA);
+                });
+
+                const ctx = document.getElementById('graficoProductosMasVendidos').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Productos mas vendidos',
+                            data: stockValues,
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            },
+            error: function (error) {
+                console.error("Error al obtener el stock por categoría:", error);
+            }
+        });
+    </script>
+</body>
+
+</html>

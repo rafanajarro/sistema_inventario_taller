@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header :: header(title = 'Inicio de sesión')">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión</title>
+</head>
+
+<body class="login-page">
+    <div class="login-container">        
+        <i class="floating-icon bi bi-gear-fill"></i>
+        <i class="floating-icon bi bi-wrench"></i>
+        <i class="floating-icon bi bi-tools"></i>
+        <i class="floating-icon bi bi-cpu"></i>
+
+        <div class="row g-0">
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="image-section">
+                    <img th:src="@{/images/{img}(img=${'11244147.jpg'})}" alt="Logo de la empresa">
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="form-section">
+                    <div class="welcome-header">
+                        <h1><i class="bi bi-wrench-adjustable-circle-fill"></i>¡Bienvenido!</h1>
+                        <p class="welcome-subtitle">Sistema de Inventario de Taller</p>
+                    </div>
+
+                    <form class="user" th:action="@{/access}" method="post">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-person-fill"></i>
+                                    </span>
+                                </div>
+                                <input type="text" name="username" class="form-control" id="username"
+                                    placeholder="Ingresa tu usuario" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-lock-fill"></i>
+                                    </span>
+                                </div>
+                                <input type="password" name="password" class="form-control" id="exampleInputPassword"
+                                    placeholder="Ingresa tu contraseña" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-login">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                        </button>
+                    </form>
+
+                    <div class="divider"></div>
+
+                    <!-- Mensajes de error y éxito -->
+                    <div th:if="${param.error}" class="alert alert-warning" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Usuario o contraseña incorrectos.
+                    </div>
+
+                    <div th:if="${param.logout}" class="alert alert-success" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        Has cerrado sesión exitosamente.
+                    </div>
+
+                    <div th:if="${mensaje}"
+                        th:classappend="${tipoMensaje == 'success' ? 'alert alert-success' : 'alert alert-danger'}"
+                        role="alert">
+                        <i
+                            th:class="${tipoMensaje == 'success' ? 'bi bi-check-circle-fill me-2' : 'bi bi-x-circle-fill me-2'}"></i>
+                        <span th:text="${mensaje}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/alertFade.js}"></script>
+    <script>
+        $(document).ready(() => {
+            // Animación de entrada para los elementos del formulario
+            $('.form-group').each(function (index) {
+                $(this).css({
+                    'opacity': '0',
+                    'transform': 'translateY(30px)'
+                }).animate({
+                    'opacity': '1'
+                }, {
+                    duration: 500,
+                    delay: index * 100,
+                    step: function (now, tween) {
+                        if (tween.prop === 'opacity') {
+                            $(this).css('transform', 'translateY(' + (30 - (30 * now)) + 'px)');
+                        }
+                    }
+                });
+            });
+
+            // Efecto de ripple en el botón
+            $('.btn-login').on('click', function (e) {
+                let ripple = $('<span class="ripple"></span>');
+                $(this).append(ripple);
+
+                let x = e.offsetX;
+                let y = e.offsetY;
+
+                ripple.css({
+                    left: x + 'px',
+                    top: y + 'px'
+                });
+
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });            
+        });
+    </script>
+</body>
+
+</html>

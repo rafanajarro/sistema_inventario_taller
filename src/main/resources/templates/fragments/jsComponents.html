@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div th:fragment="jsScripts">
+        <!-- Bootstrap core JavaScript-->
+        <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+        <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script th:src="@{/js/sb-admin-2.min.js}"></script>
+
+        <!-- Page level plugins -->
+        <script th:src="@{/vendor/datatables/jquery.dataTables.min.js}"></script>
+        <script th:src="@{/vendor/datatables/dataTables.bootstrap4.min.js}"></script>
+
+        <!-- Page level custom scripts -->
+        <script th:src="@{/js/demo/datatables-demo.js}"></script>
+
+        <!-- Select two -->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script th:src="@{/js/select-2-config.js}"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- Alert Fade -->
+        <script th:src="@{/js/alertFade.js}"></script>
+        <!--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>-->
+
+        <!-- Charts -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+        <script type="text/javascript" th:inline="javascript">
+            $(document).ready((e) => {
+                $("#passWordForm").on("submit", (e) => {
+                    e.preventDefault()
+                    let divsValidados = document.getElementsByClassName("need-validation-pass");
+                    let formData = $("#passWordForm").serialize();
+                    console.log(formData)
+                    let actualPass = $("#actualPass").val();
+                    let newPass = $("#newPass").val()
+                    let repeatPass = $("#repeatlPass").val();
+                    let invalidActual = document.getElementById("feedback-bad-actual");
+                    let invalidNew = document.getElementById("feedback-bad-new")
+                    let invalidRepeat = document.getElementById("feedback-bad-repeat")
+                    let seValido = true;
+                    let brefresh = false;
+
+                    if (actualPass == "") {
+                        invalidActual.innerHTML = "Por favor ingrese su contraseña actual";
+                        seValido = false;
+                    }
+
+                    if (newPass == "") {
+                        invalidNew.innerHTML = "Por favor ingrese su nueva contraseña";
+                        seValido = false;
+                    }
+                    if (repeatPass == "") {
+                        invalidRepeat.innerHTML = "Por favor repita su nueva contraseña";
+                        seValido = false;
+                    }
+
+                    if (!seValido) {
+
+                        for (let div of divsValidados) {
+                            console.log(div)
+                            div.classList.add("was-validated")
+                        }
+                    } else {
+                        $.ajax({
+                            url: "/validarPass",
+                            data: formData,
+                            method: "POST",
+                            success: (response) => {
+                                if (response.result != "00") {
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: response.message,
+                                        icon: 'error',
+                                        confirmButtonText: 'Volver'
+                                    })
+                                } else {
+                                    console.log(newPass + " | " + repeatPass)
+                                    if (newPass != repeatPass) {
+                                        Swal.fire({
+                                            title: 'Error',
+                                            text: 'Por favor validar que la contraseña nueva sea la misma al momento de repetirla',
+                                            icon: 'error',
+                                            confirmButtonText: 'Volver'
+                                        })
+                                    } else {
+                                        $.ajax({
+                                            url: "/ChangePass",
+                                            data: formData,
+                                            method: "POST",
+                                            success: (response) => {
+                                                if (response.result == "00") {
+                                                    Swal.fire({
+                                                        title: 'Exito',
+                                                        text: response.message,
+                                                        icon: 'success',
+                                                        confirmButtonText: 'Volver'
+                                                    }).then((e) => {
+                                                        brefresh = true;
+                                                        if (brefresh) {
+                                                            window.location.reload();
+                                                        }
+                                                    })
+
+                                                } else {
+                                                    Swal.fire({
+                                                        title: 'Error',
+                                                        text: response.message,
+                                                        icon: 'error',
+                                                        confirmButtonText: 'Volver'
+                                                    })
+                                                    brefresh = false;
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            },
+                            error: (e) => {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'No se ha podido validar la contraseña',
+                                    icon: 'error',
+                                    confirmButtonText: 'Volver'
+                                })
+                            }
+                        })
+                    }
+                })
+            })
+        </script>
+        <!-- MOSTRAR ACTIVE EN ELEMENTOS DEL SIDEBAR -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const currentPath = window.location.pathname;
+                const links = document.querySelectorAll('.sidebar .nav-link');
+
+                links.forEach(link => {
+                    if (currentPath.startsWith(link.getAttribute('href'))) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        </script>
+        <!-- TEMA DEL SISTEMA -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const themeSelector = document.getElementById('theme-selector');
+                const body = document.body;
+
+                // Cargar tema guardado o poner claro por defecto
+                const savedTheme = localStorage.getItem('theme') || 'theme-light';
+                body.classList.add(savedTheme);
+                themeSelector.value = savedTheme;
+
+                themeSelector.addEventListener('change', function () {
+                    // Quitar clases anteriores
+                    body.classList.remove('theme-light', 'theme-dark', 'theme-blue', 'theme-green');
+                    // Agregar nueva clase
+                    body.classList.add(this.value);
+                    // Guardar en localStorage
+                    localStorage.setItem('theme', this.value);
+                });
+            });
+        </script>
+
+    </div>
+</body>
+
+</html>

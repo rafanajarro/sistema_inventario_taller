@@ -1,0 +1,158 @@
+<!-- templates/fragments/sidebar.html -->
+<div th:fragment="sidebar">
+    <!-- Overlay para móvil -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Botón hamburguesa siempre visible en móvil -->
+    <button class="btn toggle-btn d-md-none" type="button" id="menuToggle">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebarMenu">
+        <div class="brand-logo">
+            <i class="bi bi-wrench-adjustable-circle-fill"></i>
+            <span>SISTEMA INVENTARIO<br>TALLER</span>
+            <button class="btn close-btn d-md-none" id="closeSidebar">
+                <i class="bi bi-x"></i>
+            </button>
+        </div>
+
+        <div class="nav-section">
+            <h6 class="nav-section-title">Dashboard</h6>
+            <a th:href="@{/inicio}" class="nav-link">
+                <i class="bi bi-grid-fill"></i>
+                <span>Dashboard</span>
+            </a>
+        </div>
+
+        <div class="nav-section" sec:authorize="hasRole('ADMIN')">
+            <h6 class="nav-section-title">Administración</h6>
+            <a th:href="@{/unidades}" class="nav-link">
+                <i class="bi bi-person-vcard-fill"></i>
+                <span>Clientes</span>
+            </a>
+            <a th:href="@{/usuarios}" class="nav-link">
+                <i class="bi bi-people-fill"></i>
+                <span>Usuarios</span>
+            </a>
+            <a th:href="@{/roles}" class="nav-link">
+                <i class="bi bi-gear-fill"></i>
+                <span>Roles</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <h6 class="nav-section-title">Inventario</h6>
+            <a th:href="@{/productos}" class="nav-link">
+                <i class="bi bi-archive-fill"></i>
+                <span>Productos</span>
+            </a>
+            <a th:href="@{/categoria}" class="nav-link">
+                <i class="bi bi-collection-fill"></i>
+                <span>Categorías</span>
+            </a>
+            <a th:href="@{/inventario}" class="nav-link">
+                <i class="bi bi-box-seam-fill"></i>
+                <span>Servicios</span>
+            </a>
+            <a th:href="@{/movimiento}" class="nav-link">
+                <i class="bi bi-cash-stack"></i>
+                <span>Cuentas Pendientes</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <h6 class="nav-section-title">Sesión</h6>
+            <a th:href="@{/logout}" class="nav-link logout">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Cerrar Sesión</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- JavaScript para funcionalidad móvil -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuToggle = document.getElementById('menuToggle');
+            const closeSidebar = document.getElementById('closeSidebar');
+            const sidebarMenu = document.getElementById('sidebarMenu');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+            // Función para abrir sidebar
+            function openSidebar() {
+                if (sidebarMenu && sidebarOverlay) {
+                    sidebarMenu.classList.add('show');
+                    sidebarOverlay.classList.add('show');
+                    document.body.style.overflow = 'hidden'; // Prevenir scroll
+                }
+            }
+
+            // Función para cerrar sidebar
+            function closeSidebarFunc() {
+                if (sidebarMenu && sidebarOverlay) {
+                    sidebarMenu.classList.remove('show');
+                    sidebarOverlay.classList.remove('show');
+                    document.body.style.overflow = ''; // Restaurar scroll
+                }
+            }
+
+            // Event listeners
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    openSidebar();
+                });
+            }
+
+            if (closeSidebar) {
+                closeSidebar.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    closeSidebarFunc();
+                });
+            }
+
+            // Cerrar sidebar al hacer clic en el overlay
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', function () {
+                    closeSidebarFunc();
+                });
+            }
+
+            // Cerrar sidebar con tecla Escape
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape' && window.innerWidth <= 767) {
+                    closeSidebarFunc();
+                }
+            });
+
+            // Manejar cambio de tamaño de ventana
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 767) {
+                    // En desktop, asegurar que el sidebar esté visible y sin overlay
+                    closeSidebarFunc();
+                    if (sidebarMenu) {
+                        sidebarMenu.classList.remove('show');
+                    }
+                }
+            });
+
+            // Highlight active link based on current URL
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+            navLinks.forEach(link => {
+                link.classList.remove('active'); // Limpiar activos existentes
+                try {
+                    const linkPath = new URL(link.href, window.location.origin).pathname;
+                    if (currentPath === linkPath || (currentPath === '/' && linkPath === '/inicio')) {
+                        link.classList.add('active');
+                    }
+                } catch (e) {
+                    // Manejo de errores para enlaces relativos
+                    console.log('Error processing link:', link.href);
+                }
+            });
+        });
+    </script>
+</div>
