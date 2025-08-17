@@ -44,7 +44,7 @@ public class Usuario {
     @Column(name = "ESTADO", nullable = false)
     private String estado;
 
-    @Column(name = "FOTO", nullable = false)
+    @Column(name = "FOTO", nullable = true)
     private String foto;
 
     @Column(name = "DUI", nullable = false, length = 10)
