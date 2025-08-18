@@ -14,8 +14,7 @@
                     <!-- Encabezado dinámico -->
                     <div
                         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2"
-                            th:text="${rol.idRol != null} ? 'Editar Rol' : 'Nuevo Rol'">
+                        <h1 class="h2" th:text="${rol.idRol != null} ? 'Editar Rol' : 'Nuevo Rol'">
                         </h1>
                     </div>
 
@@ -30,8 +29,8 @@
                     </div>
 
                     <!-- Formulario Rol -->
-                    <form th:action="@{${rol.idRol == null ? '/roles/guardar' : '/roles/editar/' + rol.idRol} }"
-                          th:object="${rol}" method="post">
+                    <form th:action="@{${rol.idRol == null ? '/roles/crear' : '/roles/editar/' + rol.idRol} }"
+                        th:object="${rol}" method="post">
 
                         <input type="hidden" th:field="*{idRol}" />
 
@@ -39,7 +38,7 @@
                         <div class="form-group mb-3">
                             <label for="descripcion" class="form-label">Descripción</label>
                             <input type="text" class="form-control" th:field="*{descripcion}" id="descripcion"
-                                   placeholder="Ejemplo: Administrador" maxlength="25" required>
+                                placeholder="Ejemplo: Administrador" maxlength="25" required>
                         </div>
 
                         <!-- Estado -->
@@ -54,7 +53,7 @@
 
                         <!-- Botones -->
                         <button type="submit" class="btn btn-success">Guardar</button>
-                        <a href="/roles" class="btn btn-secondary">Cancelar</a>
+                        <a href="/roles/listar" class="btn btn-secondary">Cancelar</a>
                     </form>
 
                 </div>
@@ -64,5 +63,5 @@
 
     <div th:replace="fragments/jsComponents :: jsScripts"></div>
 </body>
-</html>
 
+</html>

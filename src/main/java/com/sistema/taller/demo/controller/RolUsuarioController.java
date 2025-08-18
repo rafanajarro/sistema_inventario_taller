@@ -18,20 +18,18 @@ public class RolUsuarioController {
     private RolUsuarioService rolUsuarioService;
 
     // Listar roles
-  // Listar roles
-@GetMapping("/roles/listar")
-public String listarRoles(Model model) {
-    List<RolUsuario> roles = rolUsuarioService.obtenerTodos();
-    model.addAttribute("roles", roles);
-    return "roles/listar_roles"; // templates/roles/listar_roles.html
-}
-
+    @GetMapping("/roles/listar")
+    public String listarRoles(Model model) {
+        List<RolUsuario> roles = rolUsuarioService.obtenerTodos();
+        model.addAttribute("roles", roles);
+        return "roles/listar_roles";
+    }
 
     // Formulario crear nuevo rol
     @GetMapping("/roles/nuevo")
     public String mostrarFormularioNuevoRol(Model model) {
         model.addAttribute("rol", new RolUsuario());
-        return "roles/crear_editar_rol"; // Vista: templates/roles/crear_editar_rol.html
+        return "roles/crear_editar_rol";
     }
 
     // Guardar rol
@@ -62,7 +60,7 @@ public String listarRoles(Model model) {
     // Editar rol
     @PostMapping("/roles/editar/{id}")
     public String editarRol(@PathVariable Integer id, @ModelAttribute RolUsuario rol,
-                            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes) {
         try {
             RolUsuario rolExistente = rolUsuarioService.obtenerPorId(id);
             if (rolExistente == null) {

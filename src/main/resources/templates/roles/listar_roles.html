@@ -32,16 +32,14 @@
                         <table class="table table-striped" width="100%" cellspacing="0" id="dataTable">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
+                                    <th>ID</th>                                    
                                     <th>Descripción</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr th:each="rol : ${roles}">
-                                    <td th:text="${rol.idRol}"></td>
-                               
+                                    <td th:text="${rol.idRol}"></td>                               
                                     <td th:text="${rol.descripcion}"></td>
                                     <td>
                                         <!-- Editar -->
