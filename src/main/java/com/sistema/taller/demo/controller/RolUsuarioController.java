@@ -18,12 +18,14 @@ public class RolUsuarioController {
     private RolUsuarioService rolUsuarioService;
 
     // Listar roles
-    @GetMapping("/roles")
-    public String listarRoles(Model model) {
-        List<RolUsuario> roles = rolUsuarioService.obtenerTodos();
-        model.addAttribute("roles", roles);
-        return "roles/listar_roles"; // Vista: templates/roles/listar_roles.html
-    }
+  // Listar roles
+@GetMapping("/roles/listar")
+public String listarRoles(Model model) {
+    List<RolUsuario> roles = rolUsuarioService.obtenerTodos();
+    model.addAttribute("roles", roles);
+    return "roles/listar_roles"; // templates/roles/listar_roles.html
+}
+
 
     // Formulario crear nuevo rol
     @GetMapping("/roles/nuevo")
@@ -43,7 +45,7 @@ public class RolUsuarioController {
             redirectAttributes.addFlashAttribute("mensaje", "Ocurrió un error al guardar el rol.");
             redirectAttributes.addFlashAttribute("tipoMensaje", "error");
         }
-        return "redirect:/roles";
+        return "redirect:/roles/listar";
     }
 
     // Formulario editar rol
@@ -64,7 +66,7 @@ public class RolUsuarioController {
         try {
             RolUsuario rolExistente = rolUsuarioService.obtenerPorId(id);
             if (rolExistente == null) {
-                return "redirect:/roles";
+                return "redirect:/roles/listar";
             }
 
             rolExistente.setDescripcion(rol.getDescripcion());
@@ -77,7 +79,7 @@ public class RolUsuarioController {
             redirectAttributes.addFlashAttribute("mensaje", "Ocurrió un error al editar el rol.");
             redirectAttributes.addFlashAttribute("tipoMensaje", "error");
         }
-        return "redirect:/roles";
+        return "redirect:/roles/listar";
     }
 
     // Eliminar rol
@@ -91,6 +93,6 @@ public class RolUsuarioController {
             redirectAttributes.addFlashAttribute("mensaje", "Ocurrió un error al eliminar el rol.");
             redirectAttributes.addFlashAttribute("tipoMensaje", "error");
         }
-        return "redirect:/roles";
+        return "redirect:/roles/listar";
     }
 }
