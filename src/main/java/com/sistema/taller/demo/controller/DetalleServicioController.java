@@ -26,7 +26,7 @@ public class DetalleServicioController {
         return ResponseEntity.ok(resumen);
     }
 
-    // Mostrar categorías
+    // Mostrar
     @GetMapping("/detalleServicio")
     public String listarDetalleServicio(Model model) {
         List<DetalleServicio> detalleServicios = detalleServicioService.obtenerTodos();
@@ -34,14 +34,14 @@ public class DetalleServicioController {
         return "detalleServicio/listar_detalleServicio";
     }
 
-    // Formulario nueva categoría
+    // Formulario nueva
     @GetMapping("/detalleServicio/nueva")
     public String mostrarFormularioDetalleServicio(Model model) {
         model.addAttribute("detalleServicios", new DetalleServicio());
         return "detalleServicio/crear_editar_detalleServicio";
     }
 
-    // Guardar categoría
+    // Guardar
     @PostMapping("/detalleServicio/crear")
     public String guardarDetalleServicio(@ModelAttribute DetalleServicio detalleServicio,
             RedirectAttributes redirectAttributes) {
@@ -57,7 +57,7 @@ public class DetalleServicioController {
         return "redirect:/detalleServicio";
     }
 
-    // Formulario editar categoría
+    // Formulario editar
     @GetMapping("/detalleServicio/editar/{id}")
     public String editarDetalleServicioForm(@PathVariable Integer id, Model model) {
         DetalleServicio detalleServicio = detalleServicioService.obtenerPorId(id);
@@ -68,7 +68,7 @@ public class DetalleServicioController {
         return "detalleServicio/crear_editar_detalleServicio";
     }
 
-    // Editar categoría
+    // Editar
     @PostMapping("/detalleServicio/editar/{id}")
     public String editarDetalleServicio(@PathVariable Integer id, @ModelAttribute DetalleServicio detalleServicio,
             RedirectAttributes redirectAttributes) {
@@ -94,7 +94,7 @@ public class DetalleServicioController {
         return "redirect:/detalleServicio";
     }
 
-    // Eliminar categoría
+    // Eliminar
     @GetMapping("/detalleServicio/eliminar/{id}")
     public String eliminarDetalleServicio(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         try {
