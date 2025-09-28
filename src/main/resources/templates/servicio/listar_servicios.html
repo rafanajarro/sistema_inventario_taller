@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header :: header(title='Servicios')"></head>
+
+<body>
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div th:replace="fragments/sidebar :: sidebar"></div>
+
+    <!-- Contenido principal -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div class="container-fluid p-4">
+
+                <!-- Encabezado -->
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Servicios</h1>
+                </div>
+
+                <!-- Botón agregar -->
+                <a href="/servicios/nuevo" class="btn btn-primary mb-3">Nuevo Servicio</a>
+
+                <!-- Mensajes flash -->
+                <div th:if="${mensaje}"
+                     th:classappend="${tipoMensaje == 'success' ? 'alert alert-success' : 'alert alert-danger'}"
+                     role="alert" class="mt-3">
+                    <span th:text="${mensaje}"></span>
+                </div>
+
+                <!-- Tabla servicios -->
+                <div class="table-responsive">
+                    <table class="table table-striped" width="100%" cellspacing="0" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Servicio</th>
+                                <th>Descripción</th>
+                                <th>Precio</th>
+                                <th>Fecha</th>
+                                <th>Estado Pago</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="serv : ${servicios}">
+                                <td th:text="${serv.idServicio}"></td>
+                                <td th:text="${serv.cliente.nombres}"></td>
+                                <td th:text="${serv.nombreServicio}"></td>
+                                <td th:text="${serv.descripcion}"></td>
+                                <td th:text="${#numbers.formatDecimal(serv.precioBase,1,'POINT',2,'COMMA')}"></td>
+                                <td th:text="${#temporals.format(serv.fechaServicio, 'dd/MM/yyyy')}"></td>
+                                <td>
+                                    <span th:text="${serv.estadoPago}"
+                                          th:classappend="${serv.estadoPago == 'Pagado'} ? 'badge bg-success' : 'badge bg-danger'">
+                                    </span>
+                                </td>
+                                <td>
+                                    <!-- Editar -->
+                                    <a th:href="@{/servicios/editar/{id}(id=${serv.idServicio})}">
+                                        <i class="fas fa-edit" style="color: #085691;"></i>
+                                    </a>
+
+                                    <!-- Eliminar -->
+                                    <a th:href="@{/servicios/eliminar/{id}(id=${serv.idServicio})}"
+                                       onclick="return confirm('¿Seguro que deseas eliminar este servicio?');">
+                                        <i class="fas fa-trash-alt" style="color: #085691;"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <!-- Si no hay registros -->
+                            <tr th:if="${#lists.isEmpty(servicios)}">
+                                <td colspan="8" class="text-center text-muted">No hay servicios registrados</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS Components -->
+<div th:replace="fragments/jsComponents :: jsScripts"></div>
+</body>
+</html>

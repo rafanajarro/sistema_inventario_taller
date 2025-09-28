@@ -1,0 +1,77 @@
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header :: header(title='Productos')"></head>
+
+<body>
+    <div id="wrapper">
+        <div th:replace="fragments/sidebar :: sidebar"></div>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div class="container-fluid p-4">
+
+                    <!-- Encabezado -->
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Productos</h1>
+                    </div>
+
+                    <!-- Botón agregar producto -->
+                    <a href="/productos/nuevo" class="btn btn-primary mb-3">Agregar Producto</a>
+
+                    <!-- Mensajes flash -->
+                    <div th:if="${mensaje}"
+                         th:classappend="${tipoMensaje == 'success' ? 'alert alert-success alert-dismissible fade show' : 'alert alert-danger alert-dismissible fade show'}"
+                         role="alert">
+                        <span th:text="${mensaje}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <!-- Tabla de productos -->
+                    <div class="table-responsive">
+                        <table class="table table-striped" width="100%" cellspacing="0" id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Categoría</th>
+                                    <th>Cantidad</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="prod : ${productos}">
+                                    <td th:text="${prod.idMovimiento}"></td>
+                                    <td th:text="${prod.nombreProducto}"></td>
+                                    <td th:text="${prod.descripcion}"></td>
+                                    <td th:text="${prod.idCategoria.descripcion}"></td>
+                                    <td th:text="${prod.cantidad}"></td>
+                                    <td>
+                                        <span th:text="${prod.estado == 'A' ? 'Activo' : 'Inactivo'}"
+                                              th:classappend="${prod.estado == 'A'} ? 'badge bg-success' : 'badge bg-danger'">
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/productos/editar/{id}(id=${prod.idMovimiento})}">
+                                            <i class="fas fa-edit" style="color: #085691;"></i>
+                                        </a>
+                                        <a th:href="@{/productos/eliminar/{id}(id=${prod.idMovimiento})}"
+                                           onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
+                                            <i class="fas fa-trash-alt" style="color: #085691;"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments/jsComponents :: jsScripts"></div>
+</body>
+</html>
