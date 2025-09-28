@@ -1,8 +1,10 @@
 package com.sistema.taller.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +18,17 @@ import com.sistema.taller.demo.service.MovimientoInventarioService;
 
 @Controller
 public class MovimientoInventarioController {
-    
-    @Autowired
-    private MovimientoInventarioService movimientoInventarioService;    
 
-    // Mostrar 
+    @Autowired
+    private MovimientoInventarioService movimientoInventarioService;
+
+    @GetMapping("/movimientosMensuales")
+    public ResponseEntity<?> obtenerMovimientosMensuales() {
+        List<Map<String, Object>> resumen = movimientoInventarioService.obtenerMovimientosMensuales();
+        return ResponseEntity.ok(resumen);
+    }
+
+    // Mostrar
     @GetMapping("/movimientoInventario")
     public String listarMovimientosInventario(Model model) {
         List<MovimientoInventario> movimientosInventario = movimientoInventarioService.obtenerTodos();
@@ -28,18 +36,19 @@ public class MovimientoInventarioController {
         return "movimientosInventario/listar_movimientosInventario";
     }
 
-    // Formulario nueva 
+    // Formulario nueva
     @GetMapping("/movimientoInventario/nueva")
     public String mostrarFormularioMovimientosInventario(Model model) {
         model.addAttribute("movimientoInventario", new MovimientoInventario());
         return "movimientosInventario/crear_editar_movimientosInventario";
     }
 
-    // Guardar 
+    // Guardar
     @PostMapping("/movimientoInventario/crear")
-    public String guardarMovimientosInventario(@ModelAttribute MovimientoInventario movimientoInventario, RedirectAttributes redirectAttributes) {
-        try {  
-            movimientoInventario.setIdProducto(new Producto()); //PENDIENTE          
+    public String guardarMovimientosInventario(@ModelAttribute MovimientoInventario movimientoInventario,
+            RedirectAttributes redirectAttributes) {
+        try {
+            movimientoInventario.setIdProducto(new Producto()); // PENDIENTE
             movimientoInventarioService.guardar(movimientoInventario);
             redirectAttributes.addFlashAttribute("mensaje", "El movimiento se guardó correctamente.");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
@@ -51,7 +60,7 @@ public class MovimientoInventarioController {
         return "redirect:/movimientoInventario";
     }
 
-    // Formulario editar 
+    // Formulario editar
     @GetMapping("/movimientoInventario/editar/{id}")
     public String editarMovimientosInventarioForm(@PathVariable Integer id, Model model) {
         MovimientoInventario movimientoInventario = movimientoInventarioService.obtenerPorId(id);
@@ -62,9 +71,10 @@ public class MovimientoInventarioController {
         return "movimientosInventario/crear_editar_movimientosInventario";
     }
 
-    // Editar 
+    // Editar
     @PostMapping("/movimientoInventario/editar/{id}")
-    public String editarMovimientosInventario(@PathVariable Integer id, @ModelAttribute MovimientoInventario movimientoInventario,
+    public String editarMovimientosInventario(@PathVariable Integer id,
+            @ModelAttribute MovimientoInventario movimientoInventario,
             RedirectAttributes redirectAttributes) {
         try {
             MovimientoInventario movimientoExistente = movimientoInventarioService.obtenerPorId(id);
@@ -87,7 +97,7 @@ public class MovimientoInventarioController {
         return "redirect:/movimientoInventario";
     }
 
-    // Eliminar 
+    // Eliminar
     @GetMapping("/movimientoInventario/eliminar/{id}")
     public String eliminarMovimientosInventario(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         try {

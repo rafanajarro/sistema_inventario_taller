@@ -16,32 +16,58 @@
             <div id="content">
                 <div class="container-fluid p-4">
                     <!-- Encabezado -->
-                    <div
-                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
-                        <h1 class="h2">Panel de Administración</h1>
+                    <div class="dashboard-header">
+                        <div
+                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom-0">
+                            <h1 class="h2 p-3 mb-0">Panel de Administración</h1>
+                        </div>
                     </div>
 
-                    <!-- Configuración del sistema -->
-                    <!-- 
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="card-title">Configuraciones del Sistema</h5>
+                    <div class="row mb-4">
+                        <div class="col-lg-6 mb-4">
+                            <div class="card chart-card shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">Stock total de productos por categoría</h5>
+                                    <div class="chart-container">
+                                        <canvas id="graficoStockCategoria" height="150"></canvas>
+                                    </div>
+                                </div>
                             </div>
-                            <p class="card-text">Personalice las configuraciones del sistema según las necesidades de su
-                                empresa.</p>
-                            <div>
-                                <label for="theme-selector">Selecciona un tema:</label>
-                                <select id="theme-selector" class="form-select">
-                                    <option value="theme-light">Claro</option>
-                                    <option value="theme-dark">Oscuro</option>
-                                    <option value="theme-blue">Azul</option>
-                                    <option value="theme-green">Verde</option>
-                                </select>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <div class="card chart-card shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">Movimientos mensuales</h5>
+                                    <div class="chart-container">
+                                        <canvas id="graficoMovimientos" height="150"></canvas>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    -->
+
+                    <div class="row">
+                        <div class="col-lg-6 mb-4">
+                            <div class="card chart-card shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">Productos más utilizados</h5>
+                                    <div class="chart-container">
+                                        <canvas id="graficoTopProductos" height="200"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <div class="card chart-card shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">Cuentas pendientes de clientes</h5>
+                                    <div class="chart-container">
+                                        <canvas id="graficoDistribucionSaldos" height="200"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -52,7 +78,7 @@
     <div th:replace="fragments/jsComponents :: jsScripts"></div>
 
     <script th:inline="javascript">
-        //STOCK
+        // GRAFICO DE STOCK DE INVENTARIO
         $.ajax({
             url: "/stockCategoria",
             type: "GET",
@@ -61,8 +87,8 @@
                 const stockValues = [];
 
                 data.forEach(item => {
-                    labels.push(item.CATEGORIA);
-                    stockValues.push(item.STOCK_TOTAL);
+                    labels.push(item.Categoria);
+                    stockValues.push(item.StockTotal || 0);
                 });
 
                 const ctx = document.getElementById('graficoStockCategoria').getContext('2d');
@@ -73,8 +99,22 @@
                         datasets: [{
                             label: 'Stock total por categoría',
                             data: stockValues,
-                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.5)',
+                                'rgba(54, 162, 235, 0.5)',
+                                'rgba(255, 206, 86, 0.5)',
+                                'rgba(75, 192, 192, 0.5)',
+                                'rgba(153, 102, 255, 0.5)',
+                                'rgba(255, 159, 64, 0.5)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
                             borderWidth: 1
                         }]
                     },
@@ -82,201 +122,29 @@
                         responsive: true,
                         scales: {
                             y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-            },
-            error: function (error) {
-                console.error("Error al obtener el stock por categoría:", error);
-            }
-        });
-
-        //TIPO MOVIMIENTOS
-        $.ajax({
-            url: "/tipoMovimientos",
-            type: "GET",
-            success: function (data) {
-                const labels = [];
-                const stockValues = [];
-
-                data.forEach(item => {
-                    labels.push(item.TIPO_MOVIMIENTO);
-                    stockValues.push(item.TOTAL_MOVIMIENTOS);
-                });
-
-                const ctx = document.getElementById('graficoTipoMovimientos').getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Movimientos por tipo',
-                            data: stockValues,
-                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-            },
-            error: function (error) {
-                console.error("Error al obtener el stock por categoría:", error);
-            }
-        });
-
-        //STOCK EXCESO
-        $.ajax({
-            url: "/productos/excesoStock",
-            type: "GET",
-            success: function (data) {
-                const labels = [];
-                const stockMinValues = [];
-                const stockActuValues = [];
-                const listaAlertas = $('#listaProductosExcesoStock');
-
-                let hayProductosExcesoStock = false;
-                listaAlertas.empty();
-
-                data.forEach(item => {
-                    labels.push(item.NOMBRE);
-                    //stockMinValues.push(item.STOCK_MINIMO);
-                    stockActuValues.push(item.STOCK_ACTUAL);
-
-                    // Verificar si el stock actual está por debajo del mínimo
-                    hayProductosExcesoStock = true;
-                    listaAlertas.append(`
-                            <li><strong>${item.NOMBRE}</strong>: ${item.STOCK_ACTUAL} unidades</li>`);
-
-                });
-
-                if (hayProductosExcesoStock) {
-                    $('#alertasExcesoStock').show(); // Mostrar alert solo si hay productos en la lista
-                }
-            },
-            error: function (error) {
-                console.error("Error al obtener productos con stock bajo:", error);
-            }
-        });
-
-        //STOCK BAJO
-        $.ajax({
-            url: "/productos/stockBajo",
-            type: "GET",
-            success: function (data) {
-                const labels = [];
-                const stockMinValues = [];
-                const stockActuValues = [];
-                const listaAlertas = $('#listaProductosBajoStock');
-
-                let hayProductosConBajoStock = false;
-                listaAlertas.empty();
-
-                data.forEach(item => {
-                    labels.push(item.NOMBRE);
-                    stockMinValues.push(item.STOCK_MINIMO);
-                    stockActuValues.push(item.STOCK_ACTUAL);
-
-                    // Verificar si el stock actual está por debajo del mínimo
-                    if (item.STOCK_ACTUAL < item.STOCK_MINIMO) {
-                        hayProductosConBajoStock = true;
-
-                        listaAlertas.append(`
-                            <li><strong>${item.NOMBRE}</strong>: ${item.STOCK_ACTUAL} unidades (mínimo requerido: ${item.STOCK_MINIMO})</li>`);
-                    }
-                });
-
-                if (hayProductosConBajoStock) {
-                    $('#alertasStockBajo').show(); // Mostrar alert solo si hay productos en la lista
-                }
-
-                const ctx = document.getElementById('graficoStockBajo').getContext('2d');
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [
-                            {
-                                label: 'Stock Mínimo',
-                                data: stockMinValues,
-                                backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                                borderColor: 'rgba(255, 99, 132, 1)',
-                                borderWidth: 1
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Cantidad en Stock'
+                                }
                             },
-                            {
-                                label: 'Stock Actual',
-                                data: stockActuValues,
-                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                borderWidth: 1
-                            }
-                        ]
-                    },
-                    options: {
-                        indexAxis: 'y', // Esto lo convierte en barra horizontal
-                        responsive: true,
-                        scales: {
                             x: {
-                                beginAtZero: true
+                                title: {
+                                    display: true,
+                                    text: 'Categorías'
+                                }
                             }
                         },
                         plugins: {
                             legend: {
-                                position: 'top'
+                                display: false
                             },
-                            title: {
-                                display: true,
-                                text: 'Productos con Stock por debajo del mínimo'
-                            }
-                        }
-                    }
-                });
-            },
-            error: function (error) {
-                console.error("Error al obtener productos con stock bajo:", error);
-            }
-        });
-
-        // PRODUCTOS MAS VENDIDOS
-        $.ajax({
-            url: "/inventario/productosMasVendidos",
-            type: "GET",
-            success: function (data) {
-                const labels = [];
-                const stockValues = [];
-
-                data.forEach(item => {
-                    labels.push(item.NOMBRE);
-                    stockValues.push(item.TOTAL_SALIDA);
-                });
-
-                const ctx = document.getElementById('graficoProductosMasVendidos').getContext('2d');
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Productos mas vendidos',
-                            data: stockValues,
-                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                            borderColor: 'rgba(54, 162, 235, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            x: {
-                                beginAtZero: true
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return `Stock: ${context.parsed.y} unidades`;
+                                    }
+                                }
                             }
                         }
                     }
@@ -284,6 +152,261 @@
             },
             error: function (error) {
                 console.error("Error al obtener el stock por categoría:", error);
+            }
+        });
+
+        // GRÁFICO DE MOVIMIENTOS MENSUALES
+        $.ajax({
+            url: "/movimientosMensuales",
+            type: "GET",
+            success: function (data) {
+                console.log("Datos de movimientos:", data);
+
+                const labels = [];
+                const entradas = [];
+                const salidas = [];
+
+                data.forEach(item => {
+                    labels.push(item.Mes || item.MesTexto || item.Etiqueta);
+                    entradas.push(item.Entradas || item.UnidadesEntrantes || 0);
+                    salidas.push(item.Salidas || item.UnidadesSalientes || 0);
+                });
+
+                const ctx = document.getElementById('graficoMovimientos').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Entradas de Stock',
+                                data: entradas,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4
+                            },
+                            {
+                                label: 'Salidas de Stock',
+                                data: salidas,
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Movimientos de Inventario Mensuales'
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Cantidad de Unidades'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Meses'
+                                }
+                            }
+                        },
+                        interaction: {
+                            mode: 'nearest',
+                            axis: 'x',
+                            intersect: false
+                        }
+                    }
+                });
+            },
+            error: function (error) {
+                console.error("Error al obtener movimientos mensuales:", error);
+            }
+        });
+
+        // GRAFICO DE TOP PRODUCTOS
+        $.ajax({
+            url: "/topProductos",
+            type: "GET",
+            success: function (data) {
+                console.log("Datos de top productos:", data);
+
+                const labels = [];
+                const totalUtilizado = [];
+                const colores = [
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(153, 102, 255, 0.7)',
+                    'rgba(255, 159, 64, 0.7)',
+                    'rgba(199, 199, 199, 0.7)',
+                    'rgba(83, 102, 255, 0.7)',
+                    'rgba(40, 159, 64, 0.7)',
+                    'rgba(210, 99, 132, 0.7)'
+                ];
+
+                data.forEach((item, index) => {
+                    // Limitar nombre del producto si es muy largo
+                    const nombreCorto = item.Producto.length > 20 ?
+                        item.Producto.substring(0, 20) + '...' : item.Producto;
+
+                    labels.push(nombreCorto);
+                    totalUtilizado.push(item.TotalUtilizado || 0);
+                });
+
+                const ctx = document.getElementById('graficoTopProductos').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total Utilizado',
+                            data: totalUtilizado,
+                            backgroundColor: colores,
+                            borderColor: colores.map(color => color.replace('0.7', '1')),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y', // Hace el gráfico horizontal
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Top 10 Productos Más Utilizados'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        const item = data[context.dataIndex];
+                                        return [
+                                            `Producto: ${item.Producto}`,
+                                            `Categoría: ${item.Categoria}`,
+                                            `Total utilizado: ${context.parsed.x} unidades`,
+                                            `Total vendido: $${(item.TotalVendido || 0).toFixed(2)}`,
+                                            `Veces utilizado: ${item.VecesUtilizado || 0}`
+                                        ];
+                                    }
+                                }
+                            },
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Cantidad de Unidades Utilizadas'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Productos'
+                                }
+                            }
+                        }
+                    }
+                });
+            },
+            error: function (error) {
+                console.error("Error al obtener top productos:", error);
+            }
+        });
+
+        // GRÁFICO DE DONUT 
+        $.ajax({
+            url: "/cuentasPendientesClientes",
+            type: "GET",
+            success: function (data) {
+                console.log("Datos para doughnut:", data);
+
+                // Filtrar solo clientes con saldo pendiente
+                const clientesConSaldo = data.filter(item => (item.SaldoTotalPendiente || 0) > 0);
+
+                // Tomar top 6 clientes para el doughnut
+                const topClientes = clientesConSaldo.slice(0, 6);
+                const otrosClientes = clientesConSaldo.slice(6);
+
+                const labels = topClientes.map(item => {
+                    return item.Cliente.length > 12 ?
+                        item.Cliente.substring(0, 12) + '...' : item.Cliente;
+                });
+
+                // Agregar "Otros" si hay más clientes
+                if (otrosClientes.length > 0) {
+                    labels.push('Otros');
+                }
+
+                const saldos = topClientes.map(item => item.SaldoTotalPendiente || 0);
+
+                // Calcular suma de "Otros"
+                if (otrosClientes.length > 0) {
+                    const sumaOtros = otrosClientes.reduce((sum, item) => sum + (item.SaldoTotalPendiente || 0), 0);
+                    saldos.push(sumaOtros);
+                }
+
+                const ctx = document.getElementById('graficoDistribucionSaldos').getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: saldos,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.7)',
+                                'rgba(54, 162, 235, 0.7)',
+                                'rgba(255, 206, 86, 0.7)',
+                                'rgba(75, 192, 192, 0.7)',
+                                'rgba(153, 102, 255, 0.7)',
+                                'rgba(255, 159, 64, 0.7)',
+                                'rgba(199, 199, 199, 0.7)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Distribución de Saldos Pendientes'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = Math.round((context.parsed / total) * 100);
+                                        return `${context.label}: $${context.parsed.toFixed(2)} (${percentage}%)`;
+                                    }
+                                }
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            },
+            error: function (error) {
+                console.error("Error:", error);
             }
         });
     </script>

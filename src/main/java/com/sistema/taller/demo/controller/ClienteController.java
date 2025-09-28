@@ -1,8 +1,10 @@
 package com.sistema.taller.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,12 @@ import com.sistema.taller.demo.service.ClienteService;
 public class ClienteController {
     @Autowired
     private ClienteService clienteService;
+
+    @GetMapping("/cuentasPendientesClientes")
+    public ResponseEntity<?> obtenerCuentasPendientesClientes() {
+        List<Map<String, Object>> resumen = clienteService.obtenerCuentasPendientesClientes();
+        return ResponseEntity.ok(resumen);
+    }
 
     // Mostrar clientes
     @GetMapping("/clientes")
@@ -75,9 +83,9 @@ public class ClienteController {
             clienteExistente.setApellidos(cliente.getApellidos());
             clienteExistente.setTelefono(cliente.getTelefono());
             clienteExistente.setDireccion(cliente.getDireccion());
-            clienteExistente.setCorreo(cliente.getCorreo());            
+            clienteExistente.setCorreo(cliente.getCorreo());
             clienteExistente.setEstado(cliente.getEstado());
-            clienteExistente.setDui(cliente.getDui());           
+            clienteExistente.setDui(cliente.getDui());
 
             clienteService.guardar(clienteExistente);
             redirectAttributes.addFlashAttribute("mensaje", "El cliente se actualizó correctamente.");

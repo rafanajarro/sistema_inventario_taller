@@ -1,8 +1,10 @@
 package com.sistema.taller.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,12 @@ import com.sistema.taller.demo.service.CategoriaService;
 public class CategoriaController {
     @Autowired
     private CategoriaService categoriaService;
+
+    @GetMapping("/stockCategoria")
+    public ResponseEntity<?> obtenerStockCategoria() {
+        List<Map<String, Object>> resumen = categoriaService.obtenerStockCategoria();
+        return ResponseEntity.ok(resumen);
+    }
 
     // Mostrar categorías
     @GetMapping("/categoria")
@@ -37,7 +45,7 @@ public class CategoriaController {
     // Guardar categoría
     @PostMapping("/categorias/crear")
     public String guardarCategoria(@ModelAttribute Categorias categoria, RedirectAttributes redirectAttributes) {
-        try {            
+        try {
             categoriaService.guardar(categoria);
             redirectAttributes.addFlashAttribute("mensaje", "La categoría se guardó correctamente.");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");

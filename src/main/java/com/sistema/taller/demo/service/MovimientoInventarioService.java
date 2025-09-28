@@ -1,6 +1,7 @@
 package com.sistema.taller.demo.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,10 @@ import com.sistema.taller.demo.repository.MovimientoInventarioRepository;
 public class MovimientoInventarioService {
     @Autowired
     private MovimientoInventarioRepository movimientoInventarioRepository;
+
+    public List<Map<String, Object>> obtenerMovimientosMensuales() {
+        return movimientoInventarioRepository.findMovimientosMensuales();
+    }
 
     public List<MovimientoInventario> obtenerTodos() {
         return movimientoInventarioRepository.findAll();
