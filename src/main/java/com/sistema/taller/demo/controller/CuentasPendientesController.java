@@ -86,7 +86,7 @@ public class CuentasPendientesController {
             logger.info("saldoPendienteActual " + saldoPendienteActual);
             if (abono > saldoPendienteActual) {
                 redirectAttributes.addFlashAttribute("mensaje",
-                        "El abono no puede ser mayor al saldo pendiente. Saldo actual: $" + saldoPendienteActual);
+                        "El abono no puede ser mayor al saldo pendiente. Saldo pendiente actual: $" + saldoPendienteActual);
                 redirectAttributes.addFlashAttribute("tipoMensaje", "error");
                 return "redirect:/cuentasPendientes";
             }
