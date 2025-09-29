@@ -31,22 +31,21 @@
                         </button>
                     </div>
 
-                    <form th:action="@{${inventario.idInventario == null} ? '/inventario' : '/inventario/editar/' + ${inventario.idInventario} }"
-                          th:object="${inventario}" method="post">
+                    <form
+                        th:action="@{${inventario.idInventario == null} ? '/inventario/guardar' : '/inventario/editar/' + ${inventario.idInventario}}"
+                        th:object="${inventario}" method="post">
 
-                        <input type="hidden" th:field="*{idInventario}"/>
+                        <input type="hidden" th:field="*{idInventario}" />
 
                         <div class="mb-3">
                             <label for="producto" class="form-label">Producto</label>
                             <select id="producto" class="form-control select-2" th:field="*{producto}" required>
-                                <option value="" disabled
-                                        th:selected="${inventario.producto == null}">
+                                <option value="" disabled th:selected="${inventario.producto == null}">
                                     Seleccione un producto
                                 </option>
-                                <option th:each="prod : ${productos}"
-                                        th:value="${prod.idMovimiento}"
-                                        th:text="${prod.nombreProducto}"
-                                        th:selected="${inventario.producto != null} ? ${prod.idMovimiento} == ${inventario.producto.idMovimiento} : false">
+                                <option th:each="prod : ${productos}" th:value="${prod.idMovimiento}"
+                                    th:text="${prod.nombreProducto}"
+                                    th:selected="${inventario.producto != null} ? ${prod.idMovimiento} == ${inventario.producto.idMovimiento} : false">
                                 </option>
                             </select>
                         </div>
@@ -89,4 +88,5 @@
 
     <div th:replace="fragments/jsComponents :: jsScripts"></div>
 </body>
+
 </html>
