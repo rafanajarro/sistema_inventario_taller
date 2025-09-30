@@ -4,58 +4,63 @@
 <head th:replace="fragments/header :: header(title='Servicio')"></head>
 
 <body>
-<div id="wrapper">
-    <div th:replace="fragments/sidebar :: sidebar"></div>
-    <div id="content-wrapper" class="d-flex flex-column">
-        <div id="content" class="container-fluid p-4">
+    <div id="wrapper">
+        <div th:replace="fragments/sidebar :: sidebar"></div>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content" class="container-fluid p-4">
 
-            <h1 th:text="${servicio.idServicio == null ? 'Nuevo Servicio' : 'Editar Servicio'}"></h1>
+                <h1 th:text="${servicio.idServicio == null ? 'Nuevo Servicio' : 'Editar Servicio'}"></h1>
 
-            <form th:action="@{${servicio.idServicio == null} ? '/servicios' : '/servicios/editar/' + ${servicio.idServicio}}" 
-                  th:object="${servicio}" method="post">
+                <form
+                    th:action="@{${servicio.idServicio == null} ? '/servicios' : '/servicios/editar/' + ${servicio.idServicio}}"
+                    th:object="${servicio}" method="post">
 
-                <div class="mb-3">
-                    <label>Cliente</label>
-                    <select class="form-select" th:field="*{cliente}" required>
-                        <option value="" disabled selected>Seleccione un cliente</option>
-                        <option th:each="cli : ${clientes}" th:value="${cli.idCliente}" th:text="${cli.nombres}"></option>
-                    </select>
-                </div>
+                    <div class="mb-3">
+                        <label>Cliente</label>
+                        <select class="form-select" th:field="*{cliente}" required>
+                            <option value="" disabled selected>Seleccione un cliente</option>
+                            <option th:each="cli : ${clientes}" th:value="${cli.idCliente}" th:text="${cli.nombres}">
+                            </option>
+                        </select>
+                    </div>
 
-                <div class="mb-3">
-                    <label>Nombre del Servicio</label>
-                    <input type="text" class="form-control" th:field="*{nombreServicio}" required>
-                </div>
+                    <div class="mb-3">
+                        <label>Nombre del Servicio</label>
+                        <input type="text" class="form-control" th:field="*{nombreServicio}" required>
+                    </div>
 
-                <div class="mb-3">
-                    <label>Descripción</label>
-                    <textarea class="form-control" th:field="*{descripcion}"></textarea>
-                </div>
+                    <div class="mb-3">
+                        <label>Descripción</label>
+                        <textarea class="form-control" th:field="*{descripcion}"></textarea>
+                    </div>
 
-                <div class="mb-3">
-                    <label>Precio Base</label>
-                    <input type="number" step="0.01" class="form-control" th:field="*{precioBase}" required>
-                </div>
+                    <div class="mb-3">
+                        <label>Precio Base</label>
+                        <input type="number" step="0.01" class="form-control" th:field="*{precioBase}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Fecha del Servicio</label>
+                        <input type="date" class="form-control" name="fechaServicio" th:value="${fechaServicioValue}"
+                            required>
+                    </div>
 
-                <div class="mb-3">
-                    <label>Fecha del Servicio</label>
-                    <input type="date" class="form-control" th:field="*{fechaServicio}" required>
-                </div>
 
-                <div class="mb-3">
-                    <label>Estado de Pago</label>
-                    <select class="form-select" th:field="*{estadoPago}" required>
-                        <option value="Pendiente">Pendiente</option>
-                        <option value="Pagado">Pagado</option>
-                    </select>
-                </div>
 
-                <button type="submit" class="btn btn-success">Guardar</button>
-                <a href="/servicios" class="btn btn-secondary">Cancelar</a>
-            </form>
+                    <div class="mb-3">
+                         <label>Estado de Pago</label>
+                        <select class="form-select" th:field="*{estadoPago}" required>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Pagado">Pagado</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <a href="/servicios" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-<div th:replace="fragments/jsComponents :: jsScripts"></div>
+    <div th:replace="fragments/jsComponents :: jsScripts"></div>
 </body>
+
 </html>
