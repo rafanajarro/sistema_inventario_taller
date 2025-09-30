@@ -1,9 +1,12 @@
 package com.sistema.taller.demo.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +26,12 @@ public class CuentasPendientesController {
 
     @Autowired
     private static Logger logger = LoggerFactory.getLogger(CuentasPendientesController.class);
+
+    @GetMapping("/alertasPagosPendientes")
+    public ResponseEntity<?> obtenerAlertasPagosPendientes() {
+        List<Map<String, Object>> resumen = cuentasPendientesService.obtenerAlertasPagosPendientes();
+        return ResponseEntity.ok(resumen);
+    }
 
     // Mostrar
     @GetMapping("/cuentasPendientes")
@@ -86,7 +95,8 @@ public class CuentasPendientesController {
             logger.info("saldoPendienteActual " + saldoPendienteActual);
             if (abono > saldoPendienteActual) {
                 redirectAttributes.addFlashAttribute("mensaje",
-                        "El abono no puede ser mayor al saldo pendiente. Saldo pendiente actual: $" + saldoPendienteActual);
+                        "El abono no puede ser mayor al saldo pendiente. Saldo pendiente actual: $"
+                                + saldoPendienteActual);
                 redirectAttributes.addFlashAttribute("tipoMensaje", "error");
                 return "redirect:/cuentasPendientes";
             }

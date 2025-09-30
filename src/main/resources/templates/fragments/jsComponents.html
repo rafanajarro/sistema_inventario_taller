@@ -48,7 +48,6 @@
                     e.preventDefault()
                     let divsValidados = document.getElementsByClassName("need-validation-pass");
                     let formData = $("#passWordForm").serialize();
-                    console.log(formData)
                     let actualPass = $("#actualPass").val();
                     let newPass = $("#newPass").val()
                     let repeatPass = $("#repeatlPass").val();
@@ -75,7 +74,6 @@
                     if (!seValido) {
 
                         for (let div of divsValidados) {
-                            console.log(div)
                             div.classList.add("was-validated")
                         }
                     } else {
@@ -92,7 +90,6 @@
                                         confirmButtonText: 'Volver'
                                     })
                                 } else {
-                                    console.log(newPass + " | " + repeatPass)
                                     if (newPass != repeatPass) {
                                         Swal.fire({
                                             title: 'Error',
