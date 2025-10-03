@@ -36,28 +36,27 @@
                                     <th>Nombre</th>
                                     <th>Descripción</th>
                                     <th>Categoría</th>
-                                    <th>Cantidad</th>
+                                
                                     <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr th:each="prod : ${productos}">
-                                    <td th:text="${prod.idMovimiento}"></td>
+                                    <td th:text="${prod.idProducto}"></td>
                                     <td th:text="${prod.nombreProducto}"></td>
                                     <td th:text="${prod.descripcion}"></td>
                                     <td th:text="${prod.idCategoria.descripcion}"></td>
-                                    <td th:text="${prod.cantidad}"></td>
                                     <td>
                                         <span th:text="${prod.estado == 'A' ? 'Activo' : 'Inactivo'}"
                                               th:classappend="${prod.estado == 'A'} ? 'badge bg-success' : 'badge bg-danger'">
                                         </span>
                                     </td>
                                     <td>
-                                        <a th:href="@{/productos/editar/{id}(id=${prod.idMovimiento})}">
+                                        <a th:href="@{/productos/editar/{id}(id=${prod.idProducto})}">
                                             <i class="fas fa-edit" style="color: #085691;"></i>
                                         </a>
-                                        <a th:href="@{/productos/eliminar/{id}(id=${prod.idMovimiento})}"
+                                        <a th:href="@{/productos/eliminar/{id}(id=${prod.idProducto})}"
                                            onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
                                             <i class="fas fa-trash-alt" style="color: #085691;"></i>
                                         </a>

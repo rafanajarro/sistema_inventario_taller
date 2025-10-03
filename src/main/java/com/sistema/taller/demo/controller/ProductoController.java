@@ -5,7 +5,6 @@ import com.sistema.taller.demo.service.ProductoService;
 import com.sistema.taller.demo.service.CategoriaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -63,24 +62,19 @@ public class ProductoController {
     // 📌 Actualizar producto
     @PostMapping("/editar/{id}")
     public String actualizarProducto(@PathVariable Integer id, @ModelAttribute Producto producto, RedirectAttributes redirectAttributes) {
-        producto.setIdMovimiento(id);
+        producto.setIdProducto(id);
         productoService.guardar(producto);
         redirectAttributes.addAttribute("mensaje", "Producto actualizado correctamente");
         redirectAttributes.addAttribute("tipoMensaje", "success");
         return "redirect:/productos";
     }
 
-   @GetMapping("/eliminar/{id}")
-public String eliminarServicio(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
-    try {
-        servicioService.eliminar(id);
-        redirectAttributes.addAttribute("mensaje", "Servicio eliminado correctamente");
+    // 📌 Eliminar producto
+    @GetMapping("/eliminar/{id}")
+    public String eliminarProducto(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        productoService.eliminar(id);
+        redirectAttributes.addAttribute("mensaje", "Producto eliminado correctamente");
         redirectAttributes.addAttribute("tipoMensaje", "success");
-    } catch (DataIntegrityViolationException ex) {
-        // Aquí capturamos el error por FK
-        redirectAttributes.addAttribute("mensaje", "No se puede eliminar el servicio: tiene cuentas pendientes asociadas");
-        redirectAttributes.addAttribute("tipoMensaje", "danger");
+        return "redirect:/productos";
     }
-    return "redirect:/servicios";
-}
 }

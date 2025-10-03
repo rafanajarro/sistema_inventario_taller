@@ -2,6 +2,7 @@ package com.sistema.taller.demo.controller;
 
 import com.sistema.taller.demo.model.Servicio;
 import com.sistema.taller.demo.service.ClienteService;
+import com.sistema.taller.demo.service.ProductoService;
 import com.sistema.taller.demo.service.ServicioService;
 
 import java.time.LocalDate;
@@ -22,6 +23,9 @@ public class ServicioController {
 
     @Autowired
     private ClienteService clienteService;
+    @Autowired
+
+ private ProductoService productoService;
 
     // Listar servicios
     @GetMapping
@@ -29,7 +33,7 @@ public class ServicioController {
                                   @RequestParam(value = "mensaje", required = false) String mensaje,
                                   @RequestParam(value = "tipoMensaje", required = false) String tipoMensaje) {
         model.addAttribute("servicios", servicioService.listar());
-
+        model.addAttribute("productos", productoService.obtenerTodo())  ;                              
         if (mensaje != null && !mensaje.isEmpty()) {
             model.addAttribute("mensaje", mensaje);
             model.addAttribute("tipoMensaje", tipoMensaje);

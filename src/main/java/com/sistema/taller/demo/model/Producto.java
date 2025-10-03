@@ -27,7 +27,7 @@ public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_PRODUCTO")
-    private Integer idMovimiento;
+    private Integer idProducto;
 
     @ManyToOne
     @JoinColumn(name = "ID_CATEGORIA", referencedColumnName = "ID_CATEGORIA", nullable = false)
@@ -39,8 +39,6 @@ public class Producto {
     @Column(name = "DESCRIPCION", length = 25, nullable = false)
     private String descripcion;
 
-    @Column(name = "CANTIDAD_ACTUAL", length = 1, nullable = false)
-    private Integer cantidad;
 
     @Column(name = "ESTADO", length = 25, nullable = false)
     private String estado;

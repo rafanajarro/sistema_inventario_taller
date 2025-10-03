@@ -28,7 +28,7 @@ public class DetalleServicio {
 
     @ManyToOne
     @JoinColumn(name = "ID_SERVICIO", referencedColumnName = "ID_SERVICIO", nullable = false)
-    private Servicios idServicio;
+    private Servicio idServicio;
 
     @ManyToOne
     @JoinColumn(name = "ID_PRODUCTO", referencedColumnName = "ID_PRODUCTO", nullable = false)
@@ -37,8 +37,7 @@ public class DetalleServicio {
     @Column(name = "CANTIDAD_USADA", nullable = false)
     private Integer cantidadUsada;
 
-    @Column(name = "PRECIO_UNITARIO", nullable = false)
-    private Double precioUnitario;
+   
 
     @Column(name = "SUBTOTAL", nullable = false)
     private Double subtotal;

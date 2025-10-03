@@ -47,7 +47,7 @@ public class CuentasPendientes {
 
     @ManyToOne
     @JoinColumn(name = "ID_SERVICIO", referencedColumnName = "ID_SERVICIO", nullable = false)
-    private Servicios idServicio;
+    private Servicio idServicio;
 
     @Column(name = "SALDO_PENDIENTE", nullable = false)
     private Double saldoPendiente;

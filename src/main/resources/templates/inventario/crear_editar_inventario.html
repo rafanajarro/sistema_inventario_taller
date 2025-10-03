@@ -43,9 +43,9 @@
                                 <option value="" disabled th:selected="${inventario.producto == null}">
                                     Seleccione un producto
                                 </option>
-                                <option th:each="prod : ${productos}" th:value="${prod.idMovimiento}"
+                                <option th:each="prod : ${productos}" th:value="${prod.idProducto}"
                                     th:text="${prod.nombreProducto}"
-                                    th:selected="${inventario.producto != null} ? ${prod.idMovimiento} == ${inventario.producto.idMovimiento} : false">
+                                    th:selected="${inventario.producto != null} ? ${prod.idProducto} == ${inventario.producto.idProducto} : false">
                                 </option>
                             </select>
                         </div>

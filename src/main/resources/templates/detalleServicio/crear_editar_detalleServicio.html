@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header(title='Detalle de Servicio')"></head>
+<body>
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div th:replace="fragments/sidebar :: sidebar"></div>
+
+    <!-- Contenido principal -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content" class="container-fluid p-4">
+<h1 th:text="${detalleServicio.idDetalle} == null ? 'Nuevo Detalle de Servicio' : 'Editar Detalle de Servicio'"></h1>
+
+            <!-- Formulario -->
+            <form th:action="@{${detalleServicio.idDetalle == null} ? '/detalleServicio/crear' : '/detalleServicio/editar/' + ${detalleServicio.idDetalle}}"
+                  th:object="${detalleServicio}" method="post">
+
+                <div class="mb-3">
+                    <label for="idServicio" class="form-label">Servicio</label>
+                    <select  id="idServicio" name="idServicio" class="form-select" th:field="*{idServicio}" required>
+                        <option value="" disabled selected>Seleccione un servicio</option>
+                        <option th:each="srv : ${servicios}" th:value="${srv.idServicio}" th:text="${srv.nombreServicio}"></option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="idProducto" class="form-label">Producto</label>
+                    <select class="form-select" th:field="*{idProducto}" required>
+                        <option value="" disabled selected>Seleccione un producto</option>
+                        <option th:each="prod : ${productos}" th:value="${prod.idProducto}" th:text="${prod.nombreProducto}"></option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Cantidad Usada</label>
+                    <input type="number" class="form-control" th:field="*{cantidadUsada}" min="1" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Precio Unitario</label>
+                    <input type="number" step="0.01" class="form-control" th:field="*{precioUnitario}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Subtotal</label>
+                    <input type="number" step="0.01" class="form-control" th:field="*{subtotal}" required>
+                </div>
+
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <a href="/detalleServicio" class="btn btn-secondary">Cancelar</a>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- JS Components -->
+<div th:replace="fragments/jsComponents :: jsScripts"></div>
+</body>
+</html>
