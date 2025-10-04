@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header :: header(title = 'Pagos')">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Pagos</title>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div th:replace="fragments/sidebar :: sidebar"></div>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <div class="container-fluid p-4">
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2" th:text="${pagos.idPago != null} ? 'Editar pago' : 'Nuevo pago'">
+                            Formulario</h1>
+                    </div>
+                    <a href="/" class="btn btn-secondary"><i class="fas fa-home me-1"></i>Inicio</a><br />
+
+                    <!-- Mensaje Flash -->
+                    <div th:if="${mensaje}"
+                        th:classappend="${tipoMensaje == 'success' ? 'alert alert-success' : 'alert alert-danger'}"
+                        class="alert alert-dismissible fade show" role="alert">
+                        <span th:text="${mensaje}"></span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form th:action="@{${pagos.idPago == null ? '/pagos/crear' : '/pagos/editar/' + pagos.idPago} }"
+                        th:object="${pagos}" method="post">
+
+                        <div class="mb-3 mt-3">
+                            <label for="servicio" class="form-label">Servicio</label>
+                            <select id="servicio" name="servicio" class="form-control select-2" th:field="*{servicio}"
+                                required>
+                                <option value="" disabled selected>Seleccione un servicio</option>
+                                <option th:each="srvA : ${serviciosActivos}" th:value="${srvA.idServicio}"
+                                    th:text="${srvA.nombreServicio}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="precioBase" class="form-label">Precio a pagar</label>
+                            <input type="text" id="precioBase" name="precioBase" class="form-control" readonly
+                                placeholder="Seleccione un servicio para ver el precio">
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group mb-3">
+                            <label for="montoPagado" class="form-label">Monto a pagar:</label>
+                            <input type="number" id="montoPagado" class="form-control" th:field="*{montoPagado}"
+                                placeholder="Ingrese monto a pagar" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="metodoPago" class="form-label">Método de pago:</label>
+                            <select id="metodoPago" name="metodoPago" class="form-select" th:field="*{metodoPago}"
+                                required>
+                                <option value="" disabled selected>Seleccionar...</option>
+                                <option value="Efectivo" th:selected="${metodoPago == 'Efectivo'}">Efectivo</option>
+                                <option value="Tarjeta" th:selected="${metodoPago == 'Tarjeta'}">Tarjeta</option>
+                            </select>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                            <a th:href="@{/pagos}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments/jsComponents :: jsScripts"></div>
+
+    <script>
+        $(document).ready(function () {
+            $('#servicio').change(function () {
+                var idServicio = $(this).val();
+                $.ajax({
+                    url: '/servicios/' + idServicio + '/montoPagarTotal',
+                    type: "GET",
+                    success: function (data) {
+                        $('#precioBase').val('$' + data.montoPagarTotal);
+                    },
+                    error: function (error) {
+                        $('#precioBase').val('Error al cargar precio');
+                        console.error("Error: ", error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

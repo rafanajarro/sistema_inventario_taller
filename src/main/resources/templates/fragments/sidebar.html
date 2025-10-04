@@ -19,53 +19,158 @@
         </div>
 
         <div class="nav-section">
-            <h6 class="nav-section-title">Dashboard</h6>
+            <h6 class="nav-section-title">Principal</h6>
             <a th:href="@{/inicio}" class="nav-link">
                 <i class="bi bi-grid-fill"></i>
                 <span>Dashboard</span>
             </a>
         </div>
 
+        <!-- Administración -->
         <div class="nav-section" sec:authorize="hasRole('ADMIN')">
             <h6 class="nav-section-title">Administración</h6>
-            <a th:href="@{/clientes}" class="nav-link">
-                <i class="bi bi-person-vcard-fill"></i>
-                <span>Clientes</span>
-            </a>
-            <a th:href="@{/usuarios}" class="nav-link">
-                <i class="bi bi-people-fill"></i>
-                <span>Usuarios</span>
-            </a>
-            <a th:href="@{/roles/listar}" class="nav-link">
-                <i class="bi bi-gear-fill"></i>
-                <span>Roles</span>
-            </a>
+
+            <div class="dropdown-nav">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#adminDropdown" role="button">
+                    <i class="bi bi-gear-fill"></i>
+                    <span>Configuración</span>
+                    <i class="bi bi-chevron-down dropdown-arrow"></i>
+                </a>
+                <div class="collapse" id="adminDropdown">
+                    <div class="dropdown-nav-items">
+                        <a th:href="@{/clientes}" class="nav-link dropdown-item">
+                            <i class="bi bi-person-vcard-fill"></i>
+                            <span>Clientes</span>
+                        </a>
+                        <a th:href="@{/usuarios}" class="nav-link dropdown-item">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Usuarios</span>
+                        </a>
+                        <a th:href="@{/roles/listar}" class="nav-link dropdown-item">
+                            <i class="bi bi-shield-check"></i>
+                            <span>Roles</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
 
+        <!-- Inventario y Productos -->
         <div class="nav-section">
             <h6 class="nav-section-title">Inventario</h6>
-            <a th:href="@{/productos}" class="nav-link">
-                <i class="bi bi-archive-fill"></i>
-                <span>Productos</span>
-            </a>
-            <a th:href="@{/categoria}" class="nav-link">
-                <i class="bi bi-collection-fill"></i>
-                <span>Categorías</span>
-            </a>
-            <a th:href="@{/servicios}" class="nav-link">
-                <i class="bi bi-box-seam-fill"></i>
-                <span>Servicios</span>
-            </a>
-            <a th:href="@{/inventario}" class="nav-link">
-                <i class="bi bi-box-seam-fill"></i>
-                <span>Inventario</span>
-            </a>
-            <a th:href="@{/cuentasPendientes}" class="nav-link">
-                <i class="bi bi-cash-stack"></i>
-                <span>Cuentas Pendientes</span>
-            </a>
+
+            <div class="dropdown-nav">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#inventarioDropdown" role="button">
+                    <i class="bi bi-box-seam-fill"></i>
+                    <span>Gestión de Productos</span>
+                    <i class="bi bi-chevron-down dropdown-arrow"></i>
+                </a>
+                <div class="collapse" id="inventarioDropdown">
+                    <div class="dropdown-nav-items">
+                        <a th:href="@{/categoria}" class="nav-link dropdown-item">
+                            <i class="bi bi-collection-fill"></i>
+                            <span>Categorías</span>
+                        </a>
+                        <a th:href="@{/productos}" class="nav-link dropdown-item">
+                            <i class="bi bi-archive-fill"></i>
+                            <span>Productos</span>
+                        </a>
+                        <a th:href="@{/inventario}" class="nav-link dropdown-item">
+                            <i class="bi bi-clipboard-data"></i>
+                            <span>Control Inventario</span>
+                        </a>
+                        <a th:href="@{/productos/nuevo}" class="nav-link dropdown-item">
+                            <i class="bi bi-plus-circle"></i>
+                            <span>Nuevo Producto</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
 
+        <!-- Servicios y Pagos -->
+        <div class="nav-section">
+            <h6 class="nav-section-title">Operaciones</h6>
+
+            <div class="dropdown-nav">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#serviciosDropdown" role="button">
+                    <i class="bi bi-tools"></i>
+                    <span>Servicios</span>
+                    <i class="bi bi-chevron-down dropdown-arrow"></i>
+                </a>
+                <div class="collapse" id="serviciosDropdown">
+                    <div class="dropdown-nav-items">
+                        <a th:href="@{/servicios}" class="nav-link dropdown-item">
+                            <i class="bi bi-list-check"></i>
+                            <span>Lista de Servicios</span>
+                        </a>
+                        <a th:href="@{/servicios/nuevo}" class="nav-link dropdown-item">
+                            <i class="bi bi-plus-circle"></i>
+                            <span>Nuevo Servicio</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown-nav">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#pagosDropdown" role="button">
+                    <i class="bi bi-credit-card-fill"></i>
+                    <span>Gestión de Pagos</span>
+                    <i class="bi bi-chevron-down dropdown-arrow"></i>
+                </a>
+                <div class="collapse" id="pagosDropdown">
+                    <div class="dropdown-nav-items">
+                        <a th:href="@{/pagos}" class="nav-link dropdown-item">
+                            <i class="bi bi-list-ul"></i>
+                            <span>Historial de Pagos</span>
+                        </a>
+                        <a th:href="@{/pagos/nuevo}" class="nav-link dropdown-item">
+                            <i class="bi bi-plus-circle"></i>
+                            <span>Registrar Pago</span>
+                        </a>
+                        <a th:href="@{/cuentasPendientes}" class="nav-link dropdown-item">
+                            <i class="bi bi-cash-stack"></i>
+                            <span>Cuentas Pendientes</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reportes -->
+        <div class="nav-section">
+            <h6 class="nav-section-title">Reportes</h6>
+
+            <div class="dropdown-nav">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#reportesDropdown" role="button">
+                    <i class="bi bi-graph-up"></i>
+                    <span>Reportes y Análisis</span>
+                    <i class="bi bi-chevron-down dropdown-arrow"></i>
+                </a>
+                <div class="collapse" id="reportesDropdown">
+                    <div class="dropdown-nav-items">
+                        <a th:href="@{/reportes}" class="nav-link dropdown-item">
+                            <i class="bi bi-bar-chart-fill"></i>
+                            <span>Reportes Generales</span>
+                        </a>
+                        <a th:href="@{/reportes/inventario}" class="nav-link dropdown-item">
+                            <i class="bi bi-box-seam"></i>
+                            <span>Reporte Inventario</span>
+                        </a>
+                        <a th:href="@{/reportes/financiero}" class="nav-link dropdown-item">
+                            <i class="bi bi-cash-coin"></i>
+                            <span>Reporte Financiero</span>
+                        </a>
+                        <a th:href="@{/reportes/servicios}" class="nav-link dropdown-item">
+                            <i class="bi bi-tools"></i>
+                            <span>Reporte Servicios</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sesión -->
         <div class="nav-section">
             <h6 class="nav-section-title">Sesión</h6>
             <a th:href="@{/logout}" class="nav-link logout">

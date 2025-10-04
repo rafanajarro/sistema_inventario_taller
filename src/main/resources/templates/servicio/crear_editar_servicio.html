@@ -10,16 +10,28 @@
             <div id="content" class="container-fluid p-4">
 
                 <h1 th:text="${servicio.idServicio == null ? 'Nuevo Servicio' : 'Editar Servicio'}"></h1>
+                <a href="/" class="btn btn-secondary"><i class="fas fa-home me-1"></i>Inicio</a><br />
+
+                <!-- Mensaje Flash -->
+                <div th:if="${mensaje}"
+                    th:classappend="${tipoMensaje == 'success' ? 'alert alert-success' : 'alert alert-danger'}"
+                    class="alert alert-dismissible fade show" role="alert">
+                    <span th:text="${mensaje}"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
                 <form
                     th:action="@{${servicio.idServicio == null} ? '/servicios' : '/servicios/editar/' + ${servicio.idServicio}}"
                     th:object="${servicio}" method="post">
 
-                    <div class="mb-3">
+                    <div class="mb-3 mt-3">
                         <label>Cliente</label>
                         <select class="form-select" th:field="*{cliente}" required>
                             <option value="" disabled selected>Seleccione un cliente</option>
-                            <option th:each="cli : ${clientes}" th:value="${cli.idCliente}" th:text="${cli.nombres}">
+                            <option th:each="cli : ${clientes}" th:value="${cli.idCliente}"
+                                th:text="${cli.nombres} + ' ' + ${cli.apellidos}">
                             </option>
                         </select>
                     </div>
@@ -42,16 +54,6 @@
                         <label>Fecha del Servicio</label>
                         <input type="date" class="form-control" name="fechaServicio" th:value="${fechaServicioValue}"
                             required>
-                    </div>
-
-
-
-                    <div class="mb-3">
-                         <label>Estado de Pago</label>
-                        <select class="form-select" th:field="*{estadoPago}" required>
-                            <option value="Pendiente">Pendiente</option>
-                            <option value="Pagado">Pagado</option>
-                        </select>
                     </div>
 
                     <button type="submit" class="btn btn-success">Guardar</button>

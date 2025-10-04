@@ -1,5 +1,6 @@
 package com.sistema.taller.demo.service;
 
+import com.sistema.taller.demo.model.RolUsuario;
 import com.sistema.taller.demo.model.Servicio;
 
 import com.sistema.taller.demo.repository.ServicioRepository;
@@ -28,5 +29,9 @@ public class ServicioService {
 
     public void eliminar(Integer id) {
         servicioRepository.deleteById(id);
+    }
+
+    public List<Servicio> obtenerServiciosActivos() {
+        return servicioRepository.encontrarServiciosActivos("Pendiente");
     }
 }

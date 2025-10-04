@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/header :: header(title = 'Categorías')">
+<head th:replace="fragments/header :: header(title = 'Pagos')">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categorías</title>
+    <title>Pagos</title>
 </head>
 
 <body>
@@ -18,10 +18,10 @@
                 <div class="container-fluid p-4">
                     <div
                         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class="h2">Listado de Categorías</h1>
+                        <h1 class="h2">Listado de Pagos</h1>
                     </div>
 
-                    <a th:href="@{/categorias/nueva}" class="btn btn-primary mb-3">Nueva Categoría</a>
+                    <a th:href="@{/pagos/nuevo}" class="btn btn-primary mb-3">Agregar pago</a>
 
                     <!-- Mensaje Flash -->
                     <div th:if="${mensaje}"
@@ -37,32 +37,30 @@
                         <table class="table table-striped" width="100%" cellspacing="0" id="dataTable">
                             <thead>
                                 <tr>
-                                    <th>Nombre</th>
-                                    <th>Descripción</th>
-                                    <th>Estado</th>
+                                    <th>Fecha de pago</th>
+                                    <th>Servicio</th>
+                                    <th>Monto pagado</th>
+                                    <th>Método de pago</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="cat : ${categorias}">
-                                    <td th:text="${cat.nombre}">Nombre</td>
-                                    <td th:text="${cat.descripcion}">Descripción</td>
+                                <tr th:each="pg : ${pagos}">
+                                    <td th:text="${pg.fechaPago}">fechaPago</td>
+                                    <td th:text="${pg.servicio.nombreServicio}">servicio</td>
+                                    <td th:text="'$' + ${pg.montoPagado}">montoPagado</td>
+                                    <td th:text="${pg.metodoPago}">metodoPago</td>
                                     <td>
-                                        <span th:text="${cat.estado == 'A         ' ? 'Activo' : 'Inactivo'}"
-                                            th:classappend="${cat.estado == 'A         '} ? 'badge bg-success' : 'badge bg-danger'">
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <a th:href="@{/categorias/editar/{id}(id=${cat.idCategoria})}">
+                                        <a th:href="@{/pagos/editar/{id}(id=${pg.idPago})}">
                                             <i class="fas fa-edit" style="color: #085691;"></i></a>
 
-                                        <a th:href="@{/categorias/eliminar/{id}(id=${cat.idCategoria})}"
+                                        <a th:href="@{/pagos/eliminar/{id}(id=${pg.idPago})}"
                                             onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
                                             <i class="fas fa-trash-alt" style="color: #085691;"></i></a>
                                     </td>
                                 </tr>
-                                <tr th:if="${#lists.isEmpty(categorias)}">
-                                    <td colspan="6" class="text-center">No hay categorías registradas.</td>
+                                <tr th:if="${#lists.isEmpty(pagos)}">
+                                    <td colspan="5" class="text-center">No hay pagos registrados.</td>
                                 </tr>
                             </tbody>
                         </table>

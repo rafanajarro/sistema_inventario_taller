@@ -1,9 +1,19 @@
 package com.sistema.taller.demo.controller;
 
 import com.sistema.taller.demo.model.Inventario;
+import com.sistema.taller.demo.model.MovimientoInventario;
+import com.sistema.taller.demo.model.Usuario;
 import com.sistema.taller.demo.service.InventarioService;
+import com.sistema.taller.demo.service.MovimientoInventarioService;
 import com.sistema.taller.demo.service.ProductoService;
+import com.sistema.taller.demo.service.UsuarioService;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,18 +25,18 @@ public class InventarioController {
 
     @Autowired
     private InventarioService inventarioService;
-
     @Autowired
     private ProductoService productoService;
+    @Autowired
+    private UsuarioService usuarioService;
+    @Autowired
+    private MovimientoInventarioService movimientoInventarioService;
 
     // 📌 Listar inventario
     @GetMapping
-    public String listarInventario(Model model,
-                                   @ModelAttribute("mensaje") String mensaje,
-                                   @ModelAttribute("tipoMensaje") String tipoMensaje) {
-        model.addAttribute("inventario", inventarioService.obtenerTodo());
-        model.addAttribute("mensaje", mensaje);
-        model.addAttribute("tipoMensaje", tipoMensaje);
+    public String listarInventario(Model model) {
+        List<Inventario> inventarios = inventarioService.obtenerTodo();
+        model.addAttribute("inventario", inventarios);
         return "inventario/listado_inventario";
     }
 
@@ -41,9 +51,23 @@ public class InventarioController {
     // 📌 Guardar inventario (nuevo o existente)
     @PostMapping("/guardar")
     public String guardarInventario(@ModelAttribute Inventario inventario,
-                                    RedirectAttributes redirectAttrs) {
+            RedirectAttributes redirectAttrs) {
         try {
             inventarioService.guardar(inventario);
+
+            // MOVIMIENTO DE INVENTARIO
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication != null ? authentication.getName() : "Anónimo";
+            Usuario usuario = usuarioService.obtenerPorUsername(username);
+
+            MovimientoInventario movimientoInventario = new MovimientoInventario();
+            movimientoInventario.setTipoMovimiento("ENTRADA");
+            movimientoInventario.setCantidad(inventario.getStockActual());
+            movimientoInventario.setFechaMovimiento(LocalDateTime.now());
+            movimientoInventario.setIdUsuario(usuario);
+            movimientoInventario.setIdProducto(inventario.getProducto());
+            movimientoInventarioService.guardar(movimientoInventario);
+
             redirectAttrs.addFlashAttribute("mensaje", "Inventario guardado correctamente.");
             redirectAttrs.addFlashAttribute("tipoMensaje", "success");
         } catch (Exception e) {
@@ -65,8 +89,8 @@ public class InventarioController {
     // 📌 Actualizar inventario
     @PostMapping("/editar/{id}")
     public String actualizarInventario(@PathVariable Integer id,
-                                       @ModelAttribute Inventario inventario,
-                                       RedirectAttributes redirectAttrs) {
+            @ModelAttribute Inventario inventario,
+            RedirectAttributes redirectAttrs) {
         try {
             inventario.setIdInventario(id);
             inventarioService.guardar(inventario);
@@ -82,7 +106,7 @@ public class InventarioController {
     // 📌 Eliminar inventario
     @GetMapping("/eliminar/{id}")
     public String eliminarInventario(@PathVariable Integer id,
-                                     RedirectAttributes redirectAttrs) {
+            RedirectAttributes redirectAttrs) {
         try {
             inventarioService.eliminar(id);
             redirectAttrs.addFlashAttribute("mensaje", "Inventario eliminado correctamente.");

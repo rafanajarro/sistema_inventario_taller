@@ -4,163 +4,165 @@
 <head th:replace="fragments/header :: header(title='Servicios')"></head>
 
 <body>
-<div id="wrapper">
-    <!-- Sidebar -->
-    <div th:replace="fragments/sidebar :: sidebar"></div>
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div th:replace="fragments/sidebar :: sidebar"></div>
 
-    <!-- Contenido principal -->
-    <div id="content-wrapper" class="d-flex flex-column">
-        <div id="content">
-            <div class="container-fluid p-4">
+        <!-- Contenido principal -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div class="container-fluid p-4">
 
-                <!-- Encabezado -->
-                <div
-                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Servicios</h1>
-                </div>
+                    <!-- Encabezado -->
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Servicios</h1>
+                    </div>
 
-                <!-- Botón agregar -->
-                <a href="/servicios/nuevo" class="btn btn-primary mb-3">Nuevo Servicio</a>
+                    <!-- Botón agregar -->
+                    <a href="/servicios/nuevo" class="btn btn-primary mb-3">Nuevo Servicio</a>
 
-                <!-- Mensajes flash -->
-                <div th:if="${mensaje}"
-                     th:classappend="${tipoMensaje == 'success' ? 'alert alert-success' : 'alert alert-danger'}"
-                     class="alert alert-dismissible fade show mt-3" role="alert">
-                    <span th:text="${mensaje}"></span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                    <!-- Mensajes flash -->
+                    <div th:if="${mensaje}"
+                        th:classappend="${tipoMensaje == 'success' ? 'alert alert-success' : 'alert alert-danger'}"
+                        class="alert alert-dismissible fade show mt-3" role="alert">
+                        <span th:text="${mensaje}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
 
-                <!-- Tabla servicios -->
-                <div class="table-responsive">
-                    <table class="table table-striped" width="100%" cellspacing="0" id="dataTable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Cliente</th>
-                                <th>Servicio</th>
-                                <th>Descripción</th>
-                                <th>Precio</th>
-                                <th>Fecha</th>
-                                <th>Estado Pago</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="serv : ${servicios}">
-                                <td th:text="${serv.idServicio}"></td>
-                                <td th:text="${serv.cliente.nombres}"></td>
-                                <td th:text="${serv.nombreServicio}"></td>
-                                <td th:text="${serv.descripcion}"></td>
-                                <td th:text="${#numbers.formatDecimal(serv.precioBase,1,'POINT',2,'COMMA')}"></td>
-                                <td th:text="${#temporals.format(serv.fechaServicio, 'dd/MM/yyyy')}"></td>
-                                <td>
-                                    <span th:text="${serv.estadoPago}"
-                                          th:classappend="${serv.estadoPago == 'Pagado'} ? 'badge bg-success' : 'badge bg-danger'">
-                                    </span>
-                                </td>
-                                <td>
-                                    <!-- Editar -->
-                                    <a th:href="@{/servicios/editar/{id}(id=${serv.idServicio})}">
-                                        <i class="fas fa-edit" style="color: #085691;"></i>
-                                    </a>
-
-                                    <!-- Eliminar -->
-                                    <a th:href="@{/servicios/eliminar/{id}(id=${serv.idServicio})}"
-                                       onclick="return confirm('¿Seguro que deseas eliminar este servicio?');">
-                                        <i class="fas fa-trash-alt" style="color: #085691;"></i>
-                                    </a>
-
-                                    <!-- Agregar Detalle (abre modal) -->
-                                    <button type="button" class="btn btn-link p-0 btn-agregar-detalle"
+                    <!-- Tabla servicios -->
+                    <div class="table-responsive">
+                        <table class="table table-striped" width="100%" cellspacing="0" id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Cliente</th>
+                                    <th>Servicio</th>
+                                    <th>Descripción</th>
+                                    <th>Precio</th>
+                                    <th>Fecha</th>
+                                    <th>Estado Pago</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="serv : ${servicios}">
+                                    <td th:text="${serv.idServicio}"></td>
+                                    <td th:text="${serv.cliente.nombres} + ' ' + ${serv.cliente.apellidos}"></td>
+                                    <td th:text="${serv.nombreServicio}"></td>
+                                    <td th:text="${serv.descripcion}"></td>
+                                    <td th:text="'$' + ${#numbers.formatDecimal(serv.precioBase,1,'POINT',2,'COMMA')}"></td>
+                                    <td th:text="${#temporals.format(serv.fechaServicio, 'dd/MM/yyyy')}"></td>
+                                    <td>
+                                        <span th:switch="${serv.estadoPago}">
+                                            <span th:case="'Pagado'" class="badge bg-success"
+                                                th:text="${serv.estadoPago}">Pagado</span>
+                                            <span th:case="'Parcial'" class="badge bg-warning"
+                                                th:text="${serv.estadoPago}">Parcial</span>
+                                            <span th:case="*" class="badge bg-danger"
+                                                th:text="${serv.estadoPago}">Pendiente</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <!-- Ver detalles -->
+                                        <a th:href="@{/detalleServicio/listar/{id}(id=${serv.idServicio})}">
+                                            <i class="fas fa-solid fa-eye" style="color: #085691;"></i>
+                                        </a>
+                                        <!-- Agregar Detalle (abre modal) -->
+                                        <button type="button" class="btn btn-link p-0 btn-agregar-detalle"
                                             th:data-idservicio="${serv.idServicio}"
                                             th:data-nombreservicio="${serv.nombreServicio}">
-                                        <i class="fas fa-plus-circle" style="color: green;"></i>
-                                    </button>
-                                     <!-- Ver detalles -->
-                                 
-                                    <a th:href="@{/detalleServicio/listar/{id}(id=${serv.idServicio})}">
-                                       
-                                        <i class="fa-solid fa-eye" style="color: #085691;"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <!-- Si no hay registros -->
-                            <tr th:if="${#lists.isEmpty(servicios)}">
-                                <td colspan="8" class="text-center text-muted">No hay servicios registrados</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                                            <i class="fas fa-plus-circle" style="color: #085691;"></i>
+                                        </button>
+                                        <!-- Editar -->
+                                        <a th:href="@{/servicios/editar/{id}(id=${serv.idServicio})}">
+                                            <i class="fas fa-edit" style="color: #085691;"></i>
+                                        </a>
+                                        <!-- Eliminar -->
+                                        <a th:href="@{/servicios/eliminar/{id}(id=${serv.idServicio})}"
+                                            onclick="return confirm('¿Seguro que deseas eliminar este servicio?');">
+                                            <i class="fas fa-trash-alt" style="color: #085691;"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <!-- Si no hay registros -->
+                                <tr th:if="${#lists.isEmpty(servicios)}">
+                                    <td colspan="8" class="text-center text-muted">No hay servicios registrados</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modal para agregar detalle -->
-<div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="modalDetalleLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalDetalleLabel">Agregar Detalle al Servicio</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form th:action="@{/detalleServicio/crear}" method="post">
-                <div class="modal-body">
-                    <!-- ID Servicio oculto -->
-                    <input type="hidden" id="idServicio" name="idServicio">
+    <!-- Modal para agregar detalle -->
+    <div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="modalDetalleLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalDetalleLabel">Agregar Detalle al Servicio</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{/detalleServicio/crear}" method="post">
+                    <div class="modal-body">
+                        <!-- ID Servicio oculto -->
+                        <input type="hidden" id="idServicio" name="idServicio">
 
-                    <div class="mb-3">
-                        <label for="servicioNombre" class="form-label">Servicio</label>
-                        <input type="text" class="form-control" id="servicioNombre" readonly>
-                    </div>
+                        <div class="mb-3">
+                            <label for="servicioNombre" class="form-label">Servicio</label>
+                            <input type="text" class="form-control" id="servicioNombre" readonly>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="idProducto" class="form-label">Producto</label>
-                        <select id="idProducto" name="idProducto" class="form-select" required>
-                            <option th:each="prod : ${productos}"
-                                    th:value="${prod.idProducto}"
+                        <div class="mb-3">
+                            <label for="idProducto" class="form-label">Producto</label>
+                            <select id="idProducto" name="idProducto" class="form-select" required>
+                                <option th:each="prod : ${productos}" th:value="${prod.idProducto}"
                                     th:text="${prod.nombreProducto}">
-                            </option>
-                        </select>
-                    </div>
+                                </option>
+                            </select>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="cantidadUsada" class="form-label">Cantidad Usada</label>
-                        <input type="number" class="form-control" id="cantidadUsada" name="cantidadUsada" required min="1">
-                    </div>
+                        <div class="mb-3">
+                            <label for="cantidadUsada" class="form-label">Cantidad Usada</label>
+                            <input type="number" class="form-control" id="cantidadUsada" name="cantidadUsada" required
+                                min="1">
+                        </div>
 
-                   
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
-                </div>
-            </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- JS Components -->
-<div th:replace="fragments/jsComponents :: jsScripts"></div>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const botonesDetalle = document.querySelectorAll('.btn-agregar-detalle');
+    <!-- JS Components -->
+    <div th:replace="fragments/jsComponents :: jsScripts"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const botonesDetalle = document.querySelectorAll('.btn-agregar-detalle');
 
-        botonesDetalle.forEach(boton => {
-            boton.addEventListener('click', function () {
-                const idServicio = this.getAttribute('data-idservicio');
-                const nombreServicio = this.getAttribute('data-nombreservicio');
+            botonesDetalle.forEach(boton => {
+                boton.addEventListener('click', function () {
+                    const idServicio = this.getAttribute('data-idservicio');
+                    const nombreServicio = this.getAttribute('data-nombreservicio');
 
-                document.getElementById('idServicio').value = idServicio;
-                document.getElementById('servicioNombre').value = nombreServicio;
+                    document.getElementById('idServicio').value = idServicio;
+                    document.getElementById('servicioNombre').value = nombreServicio;
 
-                const modalElement = document.getElementById('modalDetalle');
-                const modal = new bootstrap.Modal(modalElement);
-                modal.show();
+                    const modalElement = document.getElementById('modalDetalle');
+                    const modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                });
             });
         });
-    });
-</script>
+    </script>
 </body>
+
 </html>

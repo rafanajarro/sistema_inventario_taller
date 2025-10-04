@@ -15,11 +15,15 @@ public class DetalleServicioService {
     @Autowired
     private DetalleServicioRepository detalleServicioRepository;
 
+    public List<Map<String, Object>> obtenerTopProductos() {
+        return detalleServicioRepository.findTopProductos();
+    }
 
     public List<DetalleServicio> obtenerTodos() {
         return detalleServicioRepository.findAll();
     }
-     public List<DetalleServicio> obtenerTodosporServicioID(Integer idServicio) {
+
+    public List<DetalleServicio> obtenerTodosporServicioID(Integer idServicio) {
         return detalleServicioRepository.findByIdServicio(idServicio);
     }
 

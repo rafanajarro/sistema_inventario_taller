@@ -15,14 +15,38 @@
             <!-- Main Content -->
             <div id="content">
                 <div class="container-fluid p-4">
-                    <!-- Encabezado -->
-                    <div class="dashboard-header">
-                        <div
-                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom-0">
-                            <h1 class="h2 p-3 mb-0">Panel de Administración</h1>
+                    <!-- Encabezado con Panel y Accesos Directos -->
+                    <div class="dashboard-header mb-4">
+                        <div class="panel-block rounded p-4 shadow-sm w-100">
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <!-- Título del panel -->
+                                <div class="panel-title">
+                                    <h1 class="h3 mb-2">Panel de Administración</h1>
+                                    <p class="mb-0 opacity-75">Sistema de Gestión de Taller Mecánico</p>
+                                </div>
+
+                                <!-- Accesos Directos a la derecha -->
+                                <div class="quick-actions">
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="/servicios/nuevo" class="btn btn-light text-primary">
+                                            <i class="fas fa-plus me-1"></i>Nuevo Servicio
+                                        </a>
+                                        <a href="/pagos/nuevo" class="btn btn-light text-danger">
+                                            <i class="fas fa-cash-register me-1"></i>Nuevo pago
+                                        </a>
+                                        <a href="/productos/nuevo" class="btn btn-light text-success">
+                                            <i class="fas fa-box me-1"></i>Nuevo Producto
+                                        </a>
+                                        <a href="/clientes/nuevo" class="btn btn-light text-info">
+                                            <i class="fas fa-user-plus me-1"></i>Nuevo Cliente
+                                        </a>                                        
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
+                    <!-- Alertas -->
                     <div class="row mb-4">
                         <div id="alertasPagosPendientes" class="alert alerta-persistente mb-4" style="display: none;">
                         </div>
@@ -81,12 +105,12 @@
 
     <div th:replace="fragments/userModal :: userModal"></div>
     <div th:replace="fragments/jsComponents :: jsScripts"></div>
+
     <script th:src="@{/js/graphStockCategoria.js}"></script>
     <script th:src="@{/js/graphMovimientosMensuales.js}"></script>
     <script th:src="@{/js/graphTopProductos.js}"></script>
     <script th:src="@{/js/graphCuentasPendientesClientes.js}"></script>
     <script th:src="@{/js/alertPagosPendientes.js}"></script>
-    </script>
 </body>
 
 </html>

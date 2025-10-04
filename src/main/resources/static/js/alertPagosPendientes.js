@@ -37,35 +37,70 @@ function cargarAlertasPagosPendientes() {
                 alertaElement.innerHTML = `
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="flex-grow-1">
-                            <h5 class="alert-heading">${icono} Alertas de Pagos Pendientes</h5>
-                            
-                            <div class="row mt-3">
-                                <div class="col-md-4">
-                                    <strong>Total Pendiente:</strong><br>
-                                    <span class="badge bg-${colorAlerta}">$${totalSaldo.toFixed(2)}</span>
+                            <!-- Header de la alerta -->
+                            <div class="d-flex align-items-center mb-1">
+                                <div class="alert-icon me-3">
+                                    <i class="fas fa-exclamation-triangle fa-lg text-${colorAlerta}"></i>
                                 </div>
-                                <div class="col-md-4">
-                                    <strong>Cuentas Pendientes:</strong><br>
-                                    <span class="badge bg-secondary">${alertas.length}</span>
-                                </div>
-                                <div class="col-md-4">
-                                    <strong>Clientes con Deuda:</strong><br>
-                                    <span class="badge bg-secondary">${clientesUnicos.size}</span>
+                                <div>
+                                    <h5 class="alert-title mb-1">Estado de Cuentas Pendientes</h5>
+                                    <p class="alert-subtitle mb-0 text-muted">Resumen financiero actual</p>
                                 </div>
                             </div>
                             
+                            <!-- Métricas principales -->
+                            <div class="row g-3 mb-1">
+                                <div class="col-md-4">
+                                    <div class="metric-card p-3 rounded">
+                                        <div class="metric-label text-muted small">Total Pendiente</div>
+                                        <div class="metric-value h5 mb-1 text-${colorAlerta}">$${totalSaldo.toFixed(2)}</div>
+                                        <div class="metric-trend">
+                                            <span class="badge bg-${colorAlerta}-subtle text-${colorAlerta}">Por cobrar</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="metric-card p-3 rounded">
+                                        <div class="metric-label text-muted small">Cuentas Pendientes</div>
+                                        <div class="metric-value h5 mb-1 text-gray-700">${alertas.length}</div>
+                                        <div class="metric-trend">
+                                            <span class="badge bg-gray-200 text-gray-700">Activas</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="metric-card p-3 rounded">
+                                        <div class="metric-label text-muted small">Clientes con Deuda</div>
+                                        <div class="metric-value h5 mb-1 text-gray-700">${clientesUnicos.size}</div>
+                                        <div class="metric-trend">
+                                            <span class="badge bg-gray-200 text-gray-700">En seguimiento</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Alerta crítica -->
                             ${alertaMasCritica ? `
-                            <div class="mt-3 p-2 bg-light   rounded">
-                                <strong>Alerta más crítica:</strong><br>
-                                <span class="badge bg-${alertaMasCritica.NivelAlerta === 'CRÍTICO' ? 'danger' : 'warning'}">
-                                    ${alertaMasCritica.NivelAlerta}
-                                </span>
-                                - ${alertaMasCritica.Cliente}<br>
-                                <small>Recomendación: ${alertaMasCritica.AccionRecomendada}</small>
+                            <div class="critical-alert p-3 rounded border-start border-${alertaMasCritica.NivelAlerta === 'CRÍTICO' ? 'danger' : 'warning'} border-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-flag me-2 text-${alertaMasCritica.NivelAlerta === 'CRÍTICO' ? 'danger' : 'warning'}"></i>
+                                    <strong class="me-2">Caso Requiere Atención:</strong>
+                                    <span class="badge bg-${alertaMasCritica.NivelAlerta === 'CRÍTICO' ? 'danger' : 'warning'} text-white">
+                                        ${alertaMasCritica.NivelAlerta}
+                                    </span>
+                                </div>
+                                <div class="mb-2">
+                                    <strong>Cliente:</strong> ${alertaMasCritica.Cliente}
+                                </div>
+                                <div class="recommendation p-2 bg-${alertaMasCritica.NivelAlerta === 'CRÍTICO' ? 'danger' : 'warning'}-subtle rounded">
+                                    <small class="text-muted">
+                                        <strong>Acción Recomendada:</strong> ${alertaMasCritica.AccionRecomendada}
+                                    </small>
+                                </div>
                             </div>
                             ` : ''}
                         </div>
-                        <button type="button" class="btn-close" onclick="ocultarAlerta()"></button>
+                        <button type="button" class="btn-close ms-3 mt-1" onclick="ocultarAlerta()"></button>
                     </div>
                 `;
 

@@ -1,39 +1,69 @@
 package com.sistema.taller.demo.controller;
 
+import com.sistema.taller.demo.model.DetalleServicio;
 import com.sistema.taller.demo.model.Servicio;
 import com.sistema.taller.demo.service.ClienteService;
+import com.sistema.taller.demo.service.DetalleServicioService;
 import com.sistema.taller.demo.service.ProductoService;
 import com.sistema.taller.demo.service.ServicioService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 @Controller
 @RequestMapping("/servicios")
 public class ServicioController {
 
     @Autowired
     private ServicioService servicioService;
-
     @Autowired
     private ClienteService clienteService;
     @Autowired
+    private ProductoService productoService;
+    @Autowired
+    private DetalleServicioService detalleServicioService;
 
- private ProductoService productoService;
+    @GetMapping("/{idServicio}/montoPagarTotal")
+    @ResponseBody
+    public Map<String, Double> obtenerMontoPagarTotal(@PathVariable Integer idServicio) {
+        // Obtener precio base
+        Servicio servicio = servicioService.buscarPorId(idServicio);
+        double precioBase = (servicio != null && servicio.getPrecioBase() != null)
+                ? servicio.getPrecioBase()
+                : 0.00;
+        // Obtener costos detalle servicio
+        List<DetalleServicio> detalleServicio = detalleServicioService.obtenerTodosporServicioID(idServicio);
+        double sumaSubtotal = detalleServicio.stream()
+                .mapToDouble(DetalleServicio::getSubtotal)
+                .sum();
+
+        double montoPagarTotal = sumaSubtotal + precioBase;
+
+        return Collections.singletonMap("montoPagarTotal", montoPagarTotal);
+    }
 
     // Listar servicios
     @GetMapping
     public String listarServicios(Model model,
-                                  @RequestParam(value = "mensaje", required = false) String mensaje,
-                                  @RequestParam(value = "tipoMensaje", required = false) String tipoMensaje) {
+            @RequestParam(value = "mensaje", required = false) String mensaje,
+            @RequestParam(value = "tipoMensaje", required = false) String tipoMensaje) {
         model.addAttribute("servicios", servicioService.listar());
-        model.addAttribute("productos", productoService.obtenerTodo())  ;                              
+        model.addAttribute("productos", productoService.obtenerTodo());
         if (mensaje != null && !mensaje.isEmpty()) {
             model.addAttribute("mensaje", mensaje);
             model.addAttribute("tipoMensaje", tipoMensaje);
@@ -56,6 +86,7 @@ public class ServicioController {
     // Guardar
     @PostMapping
     public String guardarServicio(@ModelAttribute Servicio servicio, RedirectAttributes redirectAttributes) {
+        servicio.setEstadoPago("Pendiente");
         servicioService.guardar(servicio);
         redirectAttributes.addAttribute("mensaje", "Servicio creado correctamente");
         redirectAttributes.addAttribute("tipoMensaje", "success");
@@ -70,7 +101,8 @@ public class ServicioController {
         model.addAttribute("clientes", clienteService.obtenerTodos());
 
         if (servicio.getFechaServicio() != null) {
-            model.addAttribute("fechaServicioValue", servicio.getFechaServicio().format(DateTimeFormatter.ISO_LOCAL_DATE));
+            model.addAttribute("fechaServicioValue",
+                    servicio.getFechaServicio().format(DateTimeFormatter.ISO_LOCAL_DATE));
         } else {
             model.addAttribute("fechaServicioValue", "");
         }
@@ -80,25 +112,28 @@ public class ServicioController {
 
     // Actualizar
     @PostMapping("/editar/{id}")
-    public String actualizarServicio(@PathVariable Integer id, @ModelAttribute Servicio servicio, RedirectAttributes redirectAttributes) {
+    public String actualizarServicio(@PathVariable Integer id, @ModelAttribute Servicio servicio,
+            RedirectAttributes redirectAttributes) {
         servicio.setIdServicio(id);
+        servicio.setEstadoPago("Pendiente");
         servicioService.guardar(servicio);
         redirectAttributes.addAttribute("mensaje", "Servicio actualizado correctamente");
         redirectAttributes.addAttribute("tipoMensaje", "success");
         return "redirect:/servicios";
     }
 
-   @GetMapping("/eliminar/{id}")
-public String eliminarServicio(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
-    try {
-        servicioService.eliminar(id);
-        redirectAttributes.addAttribute("mensaje", "Servicio eliminado correctamente");
-        redirectAttributes.addAttribute("tipoMensaje", "success");
-    } catch (DataIntegrityViolationException ex) {
-        // Aquí capturamos el error por FK
-        redirectAttributes.addAttribute("mensaje", "No se puede eliminar el servicio: tiene cuentas pendientes asociadas");
-        redirectAttributes.addAttribute("tipoMensaje", "danger");
+    @GetMapping("/eliminar/{id}")
+    public String eliminarServicio(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        try {
+            servicioService.eliminar(id);
+            redirectAttributes.addAttribute("mensaje", "Servicio eliminado correctamente");
+            redirectAttributes.addAttribute("tipoMensaje", "success");
+        } catch (DataIntegrityViolationException ex) {
+            // Aquí capturamos el error por FK
+            redirectAttributes.addAttribute("mensaje",
+                    "No se puede eliminar el servicio: tiene cuentas pendientes asociadas");
+            redirectAttributes.addAttribute("tipoMensaje", "danger");
+        }
+        return "redirect:/servicios";
     }
-    return "redirect:/servicios";
-}
 }

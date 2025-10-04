@@ -1,9 +1,5 @@
 package com.sistema.taller.demo.model;
 
-import java.time.LocalDateTime;
-
-import org.hibernate.annotations.CreationTimestamp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,7 +34,6 @@ public class Producto {
 
     @Column(name = "DESCRIPCION", length = 25, nullable = false)
     private String descripcion;
-
 
     @Column(name = "ESTADO", length = 25, nullable = false)
     private String estado;

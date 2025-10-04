@@ -31,5 +31,5 @@ public class Servicio {
     private LocalDate fechaServicio;
 
     @Column(name = "ESTADO_PAGO", nullable = false, length = 20)
-    private String estadoPago; // "Pendiente", "Pagado", etc.
+    private String estadoPago;
 }

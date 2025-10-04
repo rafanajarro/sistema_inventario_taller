@@ -21,8 +21,6 @@
                         <h1 class="h2">Listado de Cuentas pendientes</h1>
                     </div>
 
-                    <a th:href="@{/cuentasPendientes/nueva}" class="btn btn-primary mb-3">Nueva cuenta</a>
-
                     <!-- Mensaje Flash -->
                     <div th:if="${mensaje}"
                         th:classappend="${tipoMensaje == 'success' ? 'alert alert-success' : 'alert alert-danger'}"
@@ -50,7 +48,7 @@
                             <tbody>
                                 <tr th:each="cup : ${cuentasPendientes}">
                                     <td th:text="${cup.ultimaFechaPago}">ultimaFechaPago</td>
-                                    <td th:text="${cup.idCliente.nombres}">cliente</td>
+                                    <td th:text="${cup.idCliente.nombres} + ' ' + ${cup.idCliente.apellidos}">cliente</td>
                                     <td th:text="${cup.idServicio.nombreServicio}">servicio</td>
                                     <td th:text="'$' + ${cup.montoTotal}">montoTotal</td>
                                     <td th:text="'$' + ${cup.montoPagado}">montoPagado</td>

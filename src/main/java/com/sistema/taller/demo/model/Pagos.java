@@ -1,5 +1,10 @@
 package com.sistema.taller.demo.model;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,26 +23,29 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "DETALLE_SERVICIO")
-public class DetalleServicio {
+@Table(name = "PAGOS")
+public class Pagos {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_DETALLE")
-    private Integer idDetalle;
+    @Column(name = "ID_PAGO")
+    private Integer idPago;
 
     @ManyToOne
     @JoinColumn(name = "ID_SERVICIO", referencedColumnName = "ID_SERVICIO", nullable = false)
-    private Servicio idServicio;
+    private Servicio servicio;
+
+    @Column(name = "MONTO_PAGADO", nullable = false)
+    private double montoPagado;
+
+    @UpdateTimestamp
+    @Column(name = "FECHA_PAGO", nullable = true)
+    private LocalDateTime fechaPago;
+
+    @Column(name = "METODO_PAGO", nullable = false)
+    private String metodoPago;
 
     @ManyToOne
-    @JoinColumn(name = "ID_PRODUCTO", referencedColumnName = "ID_PRODUCTO", nullable = false)
-    private Producto idProducto;
-
-    @Column(name = "CANTIDAD_USADA", nullable = false)
-    private Integer cantidadUsada;
-
-    @Column(name = "SUBTOTAL", nullable = false)
-    private Double subtotal;
-
+    @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO", nullable = false)
+    private Usuario usuario;
 }

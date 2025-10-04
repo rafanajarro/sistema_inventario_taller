@@ -12,44 +12,53 @@
                 <div class="container-fluid p-4">
 
                     <!-- Encabezado -->
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 th:text="${producto.idProducto == null ? 'Crear Producto' : 'Editar Producto'}" class="h2"></h1>
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 th:text="${producto.idProducto == null ? 'Crear Producto' : 'Editar Producto'}" class="h2">
+                        </h1>
                     </div>
 
-                    <!-- Mensajes flash -->
+                    <a href="/" class="btn btn-secondary"><i class="fas fa-home me-1"></i>Inicio</a><br />
+
+                    <!-- Mensaje Flash -->
                     <div th:if="${mensaje}"
-                         th:classappend="${tipoMensaje == 'success' ? 'alert alert-success alert-dismissible fade show' : 'alert alert-danger alert-dismissible fade show'}"
-                         role="alert">
+                        th:classappend="${tipoMensaje == 'success' ? 'alert alert-success' : 'alert alert-danger'}"
+                        class="alert alert-dismissible fade show" role="alert">
                         <span th:text="${mensaje}"></span>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
 
-                    <form th:action="@{${producto.idProducto == null} ? '/productos/guardar' : '/productos/editar/' + ${producto.idProducto} }"
-                          th:object="${producto}" method="post">
+                    <form
+                        th:action="@{${producto.idProducto == null} ? '/productos/guardar' : '/productos/editar/' + ${producto.idProducto} }"
+                        th:object="${producto}" method="post">
 
                         <input type="hidden" th:field="*{idProducto}" />
 
-                        <div class="mb-3">
+                        <div class="mb-3 mt-3">
                             <label for="nombreProducto" class="form-label">Nombre</label>
                             <input type="text" id="nombreProducto" name="nombreProducto" class="form-control"
-                                   th:field="*{nombreProducto}" required>
+                                th:field="*{nombreProducto}" required>
                         </div>
 
                         <div class="mb-3">
                             <label for="descripcion" class="form-label">Descripción</label>
                             <input type="text" id="descripcion" name="descripcion" class="form-control"
-                                   th:field="*{descripcion}" required>
+                                th:field="*{descripcion}" required>
                         </div>
 
                         <div class="mb-3">
                             <label for="idCategoria" class="form-label">Categoría</label>
-                            <select id="idCategoria" name="idCategoria" class="form-select" th:field="*{idCategoria}" required>
+                            <select id="idCategoria" name="idCategoria" class="form-select" th:field="*{idCategoria}"
+                                required>
                                 <option value="" disabled selected>Seleccione una categoría</option>
-                                <option th:each="cat : ${categorias}" th:value="${cat.idCategoria}" th:text="${cat.descripcion}"></option>
+                                <option th:each="cat : ${categorias}" th:value="${cat.idCategoria}"
+                                    th:text="${cat.descripcion}"></option>
                             </select>
                         </div>
 
-                        
+
 
                         <div class="mb-3">
                             <label for="estado" class="form-label">Estado</label>
@@ -70,4 +79,5 @@
 
     <div th:replace="fragments/jsComponents :: jsScripts"></div>
 </body>
+
 </html>

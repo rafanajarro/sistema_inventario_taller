@@ -14,4 +14,7 @@ public interface DetalleServicioRepository extends JpaRepository<DetalleServicio
     // Devuelve entidades completas filtradas por ID_SERVICIO
     @Query("SELECT d FROM DetalleServicio d WHERE d.idServicio.id = :idServicio")
     List<DetalleServicio> findByIdServicio(@Param("idServicio") Integer idServicio);
+
+    @Query(value = "SELECT * FROM VW_TOP_PRODUCTOS", nativeQuery = true)
+    List<Map<String, Object>> findTopProductos();
 }

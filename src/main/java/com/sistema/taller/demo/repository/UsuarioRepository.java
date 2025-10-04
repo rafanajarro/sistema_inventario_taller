@@ -17,4 +17,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Query(value = "SELECT p.NOMBRE, i.CANTIDAD, i.FECHA_MOVIMIENTO, m.TITULO AS    TIPO_MOVIMIENTO FROM    PRODUCTO p    INNER JOIN    INVENTARIO i    ON p.ID_PRODUCTO =    i.ID_PRODUCTO INNER    JOIN MOVIMIENTOS    m ON i.ID_MOVIMIENTO =    m.ID_MOVIMIENTO WHERE i.USUARIO_MOD = :usuarioMod ORDER    BY i.USUARIO_MOD DESC    ", nativeQuery = true)
     List<UsuarioActividad> findActividadReciente(@Param("usuarioMod") String usuarioMod);
 
+    @Query(value = "SELECT * FROM USUARIOS WHERE USERNAME = :username", nativeQuery = true)
+    Usuario encontrarPorUsername(@Param("username") String username);
+
 }

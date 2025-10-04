@@ -1,76 +1,76 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="fragments/header :: header(title='Detalle de Servicios')"></head>
+
 <body>
-<div id="wrapper">
-    <!-- Sidebar -->
-    <div th:replace="fragments/sidebar :: sidebar"></div>
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div th:replace="fragments/sidebar :: sidebar"></div>
 
-    <!-- Contenido principal -->
-    <div id="content-wrapper" class="d-flex flex-column">
-        <div id="content">
-            <div class="container-fluid p-4">
+        <!-- Contenido principal -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div class="container-fluid p-4">
+                    <!-- Encabezado -->
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Detalle de Servicios</h1>
+                    </div>
 
-                <!-- Encabezado -->
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Detalle de Servicios</h1>
+                    <!-- Mensajes flash -->
+                    <div th:if="${mensaje}"
+                        th:classappend="${tipoMensaje == 'success'} ? 'alert alert-success' : 'alert alert-danger'"
+                        class="alert alert-dismissible fade show" role="alert">
+                        <span th:text="${mensaje}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <!-- Tabla detalle servicio -->
+                    <div class="table-responsive">
+                        <table class="table table-striped" width="100%" cellspacing="0" id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Servicio</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad Usada</th>
+
+                                    <th>Subtotal</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="det : ${detalleServicios}">
+                                    <td th:text="${det.idDetalle}"></td>
+                                    <td th:text="${det.idServicio.nombreServicio}"></td>
+                                    <td th:text="${det.idProducto.nombreProducto}"></td>
+                                    <td th:text="${det.cantidadUsada}"></td>
+
+                                    <td th:text="${det.subtotal}"></td>
+                                    <td>
+                                        <!-- Editar -->
+                                        <a th:href="@{/detalleServicio/editar/{id}(id=${det.idDetalle})}">
+                                            <i class="fas fa-edit" style="color:#085691;"></i>
+                                        </a>
+                                        <!-- Eliminar -->
+                                        <a th:href="@{/detalleServicio/eliminar/{id}(id=${det.idDetalle})}"
+                                            onclick="return confirm('¿Seguro que deseas eliminar este detalle?');">
+                                            <i class="fas fa-trash-alt" style="color:#085691;"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
-
-                <!-- Botón agregar -->
-                <a href="/detalleServicio/nueva" class="btn btn-primary mb-3">Nuevo Detalle</a>
-
-                <!-- Mensajes flash -->
-                <div th:if="${mensaje}"
-                     th:classappend="${tipoMensaje == 'success'} ? 'alert alert-success' : 'alert alert-danger'"
-                     class="alert alert-dismissible fade show" role="alert">
-                    <span th:text="${mensaje}"></span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-
-                <!-- Tabla detalle servicio -->
-                <div class="table-responsive">
-                    <table class="table table-striped" width="100%" cellspacing="0" id="dataTable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Servicio</th>
-                                <th>Producto</th>
-                                <th>Cantidad Usada</th>
-                            
-                                <th>Subtotal</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="det : ${detalleServicios}">
-                                <td th:text="${det.idDetalle}"></td>
-                                <td th:text="${det.idServicio.nombreServicio}"></td>
-                                <td th:text="${det.idProducto.nombreProducto}"></td>
-                                <td th:text="${det.cantidadUsada}"></td>
-                               
-                                <td th:text="${det.subtotal}"></td>
-                                <td>
-                                    <!-- Editar -->
-                                    <a th:href="@{/detalleServicio/editar/{id}(id=${det.idDetalle})}">
-                                        <i class="fas fa-edit" style="color:#085691;"></i>
-                                    </a>
-                                    <!-- Eliminar -->
-                                    <a th:href="@{/detalleServicio/eliminar/{id}(id=${det.idDetalle})}"
-                                       onclick="return confirm('¿Seguro que deseas eliminar este detalle?');">
-                                        <i class="fas fa-trash-alt" style="color:#085691;"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
             </div>
         </div>
     </div>
-</div>
 
-<!-- JS Components -->
-<div th:replace="fragments/jsComponents :: jsScripts"></div>
+    <!-- JS Components -->
+    <div th:replace="fragments/jsComponents :: jsScripts"></div>
 </body>
+
 </html>

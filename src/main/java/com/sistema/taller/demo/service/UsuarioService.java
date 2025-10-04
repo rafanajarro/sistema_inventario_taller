@@ -1,5 +1,6 @@
 package com.sistema.taller.demo.service;
 
+import com.sistema.taller.demo.model.Servicio;
 import com.sistema.taller.demo.model.Usuario;
 import com.sistema.taller.demo.model.UsuarioActividad;
 
@@ -33,5 +34,9 @@ public class UsuarioService {
 
     public List<UsuarioActividad> obtenerUltimaActividadUsuarioActividads(String usuarioMod) {
         return usuarioRepository.findActividadReciente(usuarioMod);
+    }
+
+    public Usuario obtenerPorUsername(String username) {
+        return usuarioRepository.encontrarPorUsername(username);
     }
 }
