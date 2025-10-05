@@ -33,4 +33,8 @@ public class InventarioService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'buscarPorId'");
     }
+
+    public Inventario buscarPorIdProducto(Integer idProducto) {
+        return inventarioRepository.findById(idProducto).orElse(null);
+    }
 }

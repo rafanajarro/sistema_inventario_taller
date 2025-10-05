@@ -47,7 +47,7 @@
                             </thead>
                             <tbody>
                                 <tr th:each="cup : ${cuentasPendientes}">
-                                    <td th:text="${cup.ultimaFechaPago}">ultimaFechaPago</td>
+                                    <td th:text="${#temporals.format(cup.ultimaFechaPago, 'dd/MM/yyyy')}">ultimaFechaPago</td>
                                     <td th:text="${cup.idCliente.nombres} + ' ' + ${cup.idCliente.apellidos}">cliente</td>
                                     <td th:text="${cup.idServicio.nombreServicio}">servicio</td>
                                     <td th:text="'$' + ${cup.montoTotal}">montoTotal</td>

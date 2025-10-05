@@ -18,6 +18,11 @@
                         <h1 class="h2">Detalle de Servicios</h1>
                     </div>
 
+                    <div class="mt-4">
+                        <a th:href="@{/servicios}" class="btn btn-secondary">Servicios</a>
+                    </div>
+                    <br />
+
                     <!-- Mensajes flash -->
                     <div th:if="${mensaje}"
                         th:classappend="${tipoMensaje == 'success'} ? 'alert alert-success' : 'alert alert-danger'"
@@ -35,7 +40,6 @@
                                     <th>Servicio</th>
                                     <th>Producto</th>
                                     <th>Cantidad Usada</th>
-
                                     <th>Subtotal</th>
                                     <th>Acciones</th>
                                 </tr>

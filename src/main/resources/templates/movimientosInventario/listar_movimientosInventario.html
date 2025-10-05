@@ -40,7 +40,6 @@
                                     <th>Tipo movimiento</th>
                                     <th>Cantidad</th>
                                     <th>Fecha movimiento</th>
-                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -48,17 +47,9 @@
                                     <td th:text="${mi.tipoMovimiento}">tipoMovimiento</td>
                                     <td th:text="${mi.cantidad}">cantidad</td>
                                     <td th:text="${mi.fechaMovimiento}">fechaMovimiento</td>
-                                    <td>
-                                        <a th:href="@{/movimientoInventario/editar/{id}(id=${mi.idMovimiento})}">
-                                            <i class="fas fa-edit" style="color: #085691;"></i></a>
-
-                                        <a th:href="@{/movimientoInventario/eliminar/{id}(id=${mi.idMovimiento})}"
-                                            onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
-                                            <i class="fas fa-trash-alt" style="color: #085691;"></i></a>
-                                    </td>
                                 </tr>
                                 <tr th:if="${#lists.isEmpty(movimientoInventario)}">
-                                    <td colspan="6" class="text-center">No hay movimientos registrados.</td>
+                                    <td colspan="3" class="text-center">No hay movimientos registrados.</td>
                                 </tr>
                             </tbody>
                         </table>

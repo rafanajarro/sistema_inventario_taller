@@ -10,20 +10,32 @@ import com.sistema.taller.demo.repository.ProductoRepository;
 
 @Service
 public class ProductoService {
-@Autowired
-private ProductoRepository productoRepository;
- public List<Producto> obtenerTodo(){
-    return productoRepository.findAll();
- }
- public Producto obtenertPorProducto(Integer idInteger){
-    return productoRepository.findById(idInteger).orElse(null);
+   @Autowired
+   private ProductoRepository productoRepository;
 
- }
- public Producto guardar(Producto producto){
-    return productoRepository.save(producto);
- } 
- public void eliminar(Integer integer){
-     productoRepository.deleteById(integer);
- }
+   public List<Producto> obtenerTodo() {
+      return productoRepository.findAll();
+   }
+
+   public Producto obtenertPorProducto(Integer idInteger) {
+      return productoRepository.findById(idInteger).orElse(null);
+
+   }
+
+   public Producto guardar(Producto producto) {
+      return productoRepository.save(producto);
+   }
+
+   public void eliminar(Integer integer) {
+      productoRepository.deleteById(integer);
+   }
+
+   public List<Producto> obtenerProductoSinInventario() {
+      return productoRepository.findProductoSinInventario();
+   }
+
+   public List<Producto> obtenerProductoConInventario() {
+      return productoRepository.findProductoConInventario();
+   }
 
 }

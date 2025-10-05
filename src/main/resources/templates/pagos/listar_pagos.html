@@ -46,7 +46,7 @@
                             </thead>
                             <tbody>
                                 <tr th:each="pg : ${pagos}">
-                                    <td th:text="${pg.fechaPago}">fechaPago</td>
+                                    <td th:text="${#temporals.format(pg.fechaPago, 'dd/MM/yyyy')}">fechaPago</td>
                                     <td th:text="${pg.servicio.nombreServicio}">servicio</td>
                                     <td th:text="'$' + ${pg.montoPagado}">montoPagado</td>
                                     <td th:text="${pg.metodoPago}">metodoPago</td>

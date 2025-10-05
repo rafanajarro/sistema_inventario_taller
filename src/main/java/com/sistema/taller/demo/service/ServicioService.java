@@ -1,6 +1,5 @@
 package com.sistema.taller.demo.service;
 
-import com.sistema.taller.demo.model.RolUsuario;
 import com.sistema.taller.demo.model.Servicio;
 
 import com.sistema.taller.demo.repository.ServicioRepository;

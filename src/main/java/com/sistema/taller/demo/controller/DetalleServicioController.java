@@ -94,7 +94,8 @@ public class DetalleServicioController {
                     .orElseThrow(() -> new RuntimeException("Producto sin inventario"));
 
             if (inventario.getStockActual() < cantidadUsada) {
-                redirectAttributes.addFlashAttribute("mensaje", "Stock insuficiente para este producto.");
+                redirectAttributes.addFlashAttribute("mensaje",
+                        "Stock insuficiente para este producto. Cantidad disponible: " + inventario.getStockActual());
                 redirectAttributes.addFlashAttribute("tipoMensaje", "error");
                 return "redirect:/servicios";
             }
@@ -118,19 +119,6 @@ public class DetalleServicioController {
             // Actualizar inventario
             inventario.setStockActual(inventario.getStockActual() - cantidadUsada);
             inventarioRepository.save(inventario);
-
-            // MOVIMIENTO DE INVENTARIO
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String username = authentication != null ? authentication.getName() : "Anónimo";
-            Usuario usuario = usuarioService.obtenerPorUsername(username);
-
-            MovimientoInventario movimientoInventario = new MovimientoInventario();
-            movimientoInventario.setTipoMovimiento("SALIDA");
-            movimientoInventario.setCantidad(cantidadUsada);
-            movimientoInventario.setFechaMovimiento(LocalDateTime.now());
-            movimientoInventario.setIdUsuario(usuario);
-            movimientoInventario.setIdProducto(producto);
-            movimientoInventarioService.guardar(movimientoInventario);
 
             redirectAttributes.addFlashAttribute("mensaje", "Detalle guardado y stock actualizado.");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
@@ -190,14 +178,25 @@ public class DetalleServicioController {
     // Eliminar
     @GetMapping("/detalleServicio/eliminar/{id}")
     public String eliminarDetalleServicio(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        DetalleServicio detalleServicioExistente = detalleServicioService.obtenerPorId(id);
+        if (detalleServicioExistente == null) {
+            return "redirect:/detalleServicio";
+        }
         try {
             detalleServicioService.eliminar(id);
+
+            // ACTUALIZAR STOCK
+            Inventario inv = inventarioRepository
+                    .findInventarioByIdProducto(detalleServicioExistente.getIdProducto().getIdProducto());
+            inv.setStockActual(inv.getStockActual() + detalleServicioExistente.getCantidadUsada());
+            inventarioRepository.save(inv);
+
             redirectAttributes.addFlashAttribute("mensaje", "El detalle se eliminó correctamente.");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("mensaje", "Ocurrió un error al eliminar el detalle.");
             redirectAttributes.addFlashAttribute("tipoMensaje", "error");
         }
-        return "redirect:/detalleServicio";
+        return "redirect:/detalleServicio/listar/" + detalleServicioExistente.getIdServicio().getIdServicio();
     }
 }

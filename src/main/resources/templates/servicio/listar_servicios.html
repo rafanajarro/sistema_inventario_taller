@@ -51,7 +51,8 @@
                                     <td th:text="${serv.cliente.nombres} + ' ' + ${serv.cliente.apellidos}"></td>
                                     <td th:text="${serv.nombreServicio}"></td>
                                     <td th:text="${serv.descripcion}"></td>
-                                    <td th:text="'$' + ${#numbers.formatDecimal(serv.precioBase,1,'POINT',2,'COMMA')}"></td>
+                                    <td th:text="'$' + ${#numbers.formatDecimal(serv.precioBase,1,'POINT',2,'COMMA')}">
+                                    </td>
                                     <td th:text="${#temporals.format(serv.fechaServicio, 'dd/MM/yyyy')}"></td>
                                     <td>
                                         <span th:switch="${serv.estadoPago}">

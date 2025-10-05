@@ -53,7 +53,8 @@
                                     <td th:text=" ${cl.telefono}">telefono</td>
                                     <td th:text=" ${cl.direccion}">direccion</td>
                                     <td th:text=" ${cl.correo}">correo</td>
-                                    <td th:text=" ${cl.fechaRegistro}">fechaRegistro</td>
+                                    <td th:text="${#temporals.format(cl.fechaRegistro, 'dd/MM/yyyy')}">fechaRegistro
+                                    </td>
                                     <td>
                                         <a th:href="@{/clientes/editar/{id}(id=${cl.idCliente})}">
                                             <i class="fas fa-edit" style="color: #085691;"></i></a>

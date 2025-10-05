@@ -53,8 +53,8 @@
                                     <td th:text="${inv.producto.nombreProducto}"></td>
                                     <td th:text="${inv.stockActual}"></td>
                                     <td th:text="${inv.stockMinimo}"></td>
-                                    <td th:text="${inv.costoUnitario}"></td>
-                                    <td th:text="${inv.precioVenta}"></td>
+                                    <td th:text="'$' + ${inv.costoUnitario}"></td>
+                                    <td th:text="'$' + ${inv.precioVenta}"></td>
                                     <td>
                                         <span th:text="${inv.estado == 'A' ? 'Activo' : 'Inactivo'}"
                                             th:classappend="${inv.estado == 'A'} ? 'badge bg-success' : 'badge bg-danger'">

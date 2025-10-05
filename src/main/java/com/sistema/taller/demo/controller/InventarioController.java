@@ -44,7 +44,7 @@ public class InventarioController {
     @GetMapping("/nuevo")
     public String nuevoInventario(Model model) {
         model.addAttribute("inventario", new Inventario());
-        model.addAttribute("productos", productoService.obtenerTodo());
+        model.addAttribute("productos", productoService.obtenerProductoSinInventario());
         return "inventario/crear_editar_inventario";
     }
 
@@ -53,6 +53,15 @@ public class InventarioController {
     public String guardarInventario(@ModelAttribute Inventario inventario,
             RedirectAttributes redirectAttrs) {
         try {
+            // VALIDAR QUE NO EXISTA UN INVENTARIO YA REGISTRADO
+            Inventario inv = inventarioService.buscarPorIdProducto(inventario.getProducto().getIdProducto());
+            if (inv != null) {
+                redirectAttrs.addFlashAttribute("mensaje",
+                        "Ya existe un inventario para el producto: " + inventario.getProducto().getNombreProducto());
+                redirectAttrs.addFlashAttribute("tipoMensaje", "danger");
+                return "redirect:/inventario";
+            }
+
             inventarioService.guardar(inventario);
 
             // MOVIMIENTO DE INVENTARIO
@@ -82,7 +91,7 @@ public class InventarioController {
     public String editarInventario(@PathVariable Integer id, Model model) {
         Inventario inventario = inventarioService.obtenerPorID(id);
         model.addAttribute("inventario", inventario);
-        model.addAttribute("productos", productoService.obtenerTodo());
+        model.addAttribute("productos", productoService.obtenerProductoSinInventario());
         return "inventario/crear_editar_inventario";
     }
 

@@ -34,7 +34,6 @@
                 <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#adminDropdown" role="button">
                     <i class="bi bi-gear-fill"></i>
                     <span>Configuración</span>
-                    <i class="bi bi-chevron-down dropdown-arrow"></i>
                 </a>
                 <div class="collapse" id="adminDropdown">
                     <div class="dropdown-nav-items">
@@ -63,7 +62,6 @@
                 <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#inventarioDropdown" role="button">
                     <i class="bi bi-box-seam-fill"></i>
                     <span>Gestión de Productos</span>
-                    <i class="bi bi-chevron-down dropdown-arrow"></i>
                 </a>
                 <div class="collapse" id="inventarioDropdown">
                     <div class="dropdown-nav-items">
@@ -79,10 +77,6 @@
                             <i class="bi bi-clipboard-data"></i>
                             <span>Control Inventario</span>
                         </a>
-                        <a th:href="@{/productos/nuevo}" class="nav-link dropdown-item">
-                            <i class="bi bi-plus-circle"></i>
-                            <span>Nuevo Producto</span>
-                        </a>
                     </div>
                 </div>
             </div>
@@ -96,7 +90,6 @@
                 <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#serviciosDropdown" role="button">
                     <i class="bi bi-tools"></i>
                     <span>Servicios</span>
-                    <i class="bi bi-chevron-down dropdown-arrow"></i>
                 </a>
                 <div class="collapse" id="serviciosDropdown">
                     <div class="dropdown-nav-items">
@@ -104,29 +97,9 @@
                             <i class="bi bi-list-check"></i>
                             <span>Lista de Servicios</span>
                         </a>
-                        <a th:href="@{/servicios/nuevo}" class="nav-link dropdown-item">
-                            <i class="bi bi-plus-circle"></i>
-                            <span>Nuevo Servicio</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dropdown-nav">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#pagosDropdown" role="button">
-                    <i class="bi bi-credit-card-fill"></i>
-                    <span>Gestión de Pagos</span>
-                    <i class="bi bi-chevron-down dropdown-arrow"></i>
-                </a>
-                <div class="collapse" id="pagosDropdown">
-                    <div class="dropdown-nav-items">
                         <a th:href="@{/pagos}" class="nav-link dropdown-item">
-                            <i class="bi bi-list-ul"></i>
-                            <span>Historial de Pagos</span>
-                        </a>
-                        <a th:href="@{/pagos/nuevo}" class="nav-link dropdown-item">
-                            <i class="bi bi-plus-circle"></i>
-                            <span>Registrar Pago</span>
+                            <i class="bi bi-cash-coin"></i>
+                            <span>Pagos</span>
                         </a>
                         <a th:href="@{/cuentasPendientes}" class="nav-link dropdown-item">
                             <i class="bi bi-cash-stack"></i>
@@ -145,25 +118,24 @@
                 <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#reportesDropdown" role="button">
                     <i class="bi bi-graph-up"></i>
                     <span>Reportes y Análisis</span>
-                    <i class="bi bi-chevron-down dropdown-arrow"></i>
                 </a>
                 <div class="collapse" id="reportesDropdown">
                     <div class="dropdown-nav-items">
-                        <a th:href="@{/reportes}" class="nav-link dropdown-item">
-                            <i class="bi bi-bar-chart-fill"></i>
-                            <span>Reportes Generales</span>
-                        </a>
                         <a th:href="@{/reportes/inventario}" class="nav-link dropdown-item">
                             <i class="bi bi-box-seam"></i>
-                            <span>Reporte Inventario</span>
+                            <span>Inventario disponible</span>
+                        </a>
+                        <a th:href="@{/reportes}" class="nav-link dropdown-item">
+                            <i class="bi bi-bar-chart-fill"></i>
+                            <span>Servicios completos</span>
                         </a>
                         <a th:href="@{/reportes/financiero}" class="nav-link dropdown-item">
                             <i class="bi bi-cash-coin"></i>
-                            <span>Reporte Financiero</span>
+                            <span>Cuentas pendientes</span>
                         </a>
                         <a th:href="@{/reportes/servicios}" class="nav-link dropdown-item">
                             <i class="bi bi-tools"></i>
-                            <span>Reporte Servicios</span>
+                            <span>Ventas realizadas</span>
                         </a>
                     </div>
                 </div>
