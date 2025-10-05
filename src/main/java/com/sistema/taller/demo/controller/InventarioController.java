@@ -64,19 +64,6 @@ public class InventarioController {
 
             inventarioService.guardar(inventario);
 
-            // MOVIMIENTO DE INVENTARIO
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String username = authentication != null ? authentication.getName() : "Anónimo";
-            Usuario usuario = usuarioService.obtenerPorUsername(username);
-
-            MovimientoInventario movimientoInventario = new MovimientoInventario();
-            movimientoInventario.setTipoMovimiento("ENTRADA");
-            movimientoInventario.setCantidad(inventario.getStockActual());
-            movimientoInventario.setFechaMovimiento(LocalDateTime.now());
-            movimientoInventario.setIdUsuario(usuario);
-            movimientoInventario.setIdProducto(inventario.getProducto());
-            movimientoInventarioService.guardar(movimientoInventario);
-
             redirectAttrs.addFlashAttribute("mensaje", "Inventario guardado correctamente.");
             redirectAttrs.addFlashAttribute("tipoMensaje", "success");
         } catch (Exception e) {
