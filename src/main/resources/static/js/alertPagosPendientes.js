@@ -1,4 +1,3 @@
-// 🧾 FUNCIÓN MEJORADA PARA ALERTAS DE PAGOS PENDIENTES E INVENTARIO BAJO
 function cargarAlertasPagosPendientes() {
     $.ajax({
         url: "/alertasPagosPendientes",
@@ -100,7 +99,6 @@ function cargarAlertasPagosPendientes() {
                 alertaElement.style.display = 'none';
             }
 
-            // 📦 DESPUÉS DE MOSTRAR PAGOS PENDIENTES, CARGAMOS ALERTAS DE INVENTARIO BAJO
             cargarAlertasInventarioBajo();
         },
         error: function (error) {
@@ -111,7 +109,6 @@ function cargarAlertasPagosPendientes() {
     });
 }
 
-// 📦 FUNCIÓN PARA ALERTAS DE INVENTARIO BAJO
 function cargarAlertasInventarioBajo() {
     $.ajax({
         url: "inventario/alertasInventarioBajo",
@@ -120,17 +117,34 @@ function cargarAlertasInventarioBajo() {
             const alertaElement = document.getElementById('alertasInventarioBajo');
 
             if (alertas && alertas.length > 0) {
-                alertaElement.className = 'alert alert-warning mb-4 alerta-persistente';
+                alertaElement.className = 'alert mb-4 alerta-persistente b rounded-3';
                 alertaElement.style.display = 'block';
 
-                let productosHTML = alertas.map(a => `
-                    <tr>
-                        <td>${a.PRODUCTO}</td>
-                        <td>${a.CATEGORIA}</td>
-                        <td>${a.STOCK_ACTUAL}</td>
-                        <td>${a.STOCK_MINIMO}</td>
+                let productosHTML = alertas.map(a => {
+                    const stockBgColor = a.STOCK_ACTUAL === 0 ? '#fef2f2' : '#fef3c7';
+                    const stockTextColor = a.STOCK_ACTUAL === 0 ? '#dc2626' : '#d97706';
+
+                    return `
+                    <tr style="transition: background-color 0.15s ease;">
+                        <td style="padding: 16px; color: #111827; font-size: 14px; font-weight: 500; border-bottom: 1px solid #f3f4f6;">
+                            ${a.PRODUCTO}
+                        </td>
+                        <td style="padding: 16px; font-size: 14px; border-bottom: 1px solid #f3f4f6;">
+                            <span style="display: inline-block; padding: 4px 10px; background: #f3f4f6; color: #6b7280; border-radius: 6px; font-size: 13px; font-weight: 500;">
+                                ${a.CATEGORIA}
+                            </span>
+                        </td>
+                        <td style="padding: 16px; text-align: center; border-bottom: 1px solid #f3f4f6;">
+                            <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 40px; padding: 6px 12px; border-radius: 6px; font-weight: 600; font-size: 14px; background: ${stockBgColor}; color: ${stockTextColor};">
+                                ${a.STOCK_ACTUAL}
+                            </span>
+                        </td>
+                        <td style="padding: 16px; text-align: center; color: #9ca3af; font-weight: 500; font-size: 14px; border-bottom: 1px solid #f3f4f6;">
+                            ${a.STOCK_MINIMO}
+                        </td>
                     </tr>
-                `).join('');
+                `;
+                }).join('');
 
                 alertaElement.innerHTML = `
                     <div class="d-flex justify-content-between align-items-start">
@@ -141,17 +155,21 @@ function cargarAlertasInventarioBajo() {
                             </div>
                             <p class="text-muted small mb-2">Productos con niveles de stock cercanos o por debajo del mínimo.</p>
                             <div class="table-responsive">
-                                <table class="table table-sm table-bordered mb-0">
-                                    <thead class="table-warning">
-                                        <tr>
-                                            <th>Producto</th>
-                                            <th>Categoría</th>
-                                            <th>Stock Actual</th>
-                                            <th>Stock Mínimo</th>
+                            <div class="table-responsive">
+                                <table style="width: 100%; border-collapse: separate; border-spacing: 0;">
+                                    <thead>
+                                        <tr style="background: #fafafa;">
+                                            <th style="color: #6b7280; font-weight: 500; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 16px; text-align: left; border-bottom: 1px solid #e5e7eb;">Producto</th>
+                                            <th style="color: #6b7280; font-weight: 500; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 16px; text-align: left; border-bottom: 1px solid #e5e7eb;">Categoría</th>
+                                            <th style="color: #6b7280; font-weight: 500; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 16px; text-align: center; border-bottom: 1px solid #e5e7eb;">Stock Actual</th>
+                                            <th style="color: #6b7280; font-weight: 500; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 16px; text-align: center; border-bottom: 1px solid #e5e7eb;">Stock Mínimo</th>
                                         </tr>
                                     </thead>
-                                    <tbody>${productosHTML}</tbody>
+                                    <tbody>
+                                        ${productosHTML}
+                                    </tbody>
                                 </table>
+                            </div>
                             </div>
                         </div>
                         <button type="button" class="btn-close ms-3 mt-1" onclick="ocultarAlertaInventario()"></button>
@@ -168,7 +186,6 @@ function cargarAlertasInventarioBajo() {
     });
 }
 
-// 🧹 FUNCIONES PARA OCULTAR
 function ocultarAlerta() {
     document.getElementById('alertasPagosPendientes').style.display = 'none';
 }
@@ -177,7 +194,6 @@ function ocultarAlertaInventario() {
     document.getElementById('alertasInventarioBajo').style.display = 'none';
 }
 
-// 🚀 CARGAR AL INICIAR
 $(document).ready(function () {
     cargarAlertasPagosPendientes();
 });

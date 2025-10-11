@@ -43,10 +43,9 @@
                         <input type="number" class="form-control" th:field="*{cantidadUsada}" min="1" required>
                     </div>
 
-
-
                     <button type="submit" class="btn btn-success">Guardar</button>
-                    <a href="/detalleServicio" class="btn btn-secondary">Cancelar</a>
+                    <a th:href="@{/detalleServicio/listar/{id}(id=${detalleServicio.idServicio.idServicio})}"
+                        class="btn btn-secondary">Cancelar</a>
                 </form>
 
             </div>

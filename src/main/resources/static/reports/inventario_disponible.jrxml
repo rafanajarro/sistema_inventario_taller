@@ -1,210 +1,310 @@
-<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
-<jasperReport name="inventario_disponible" language="java" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="df013db5-f76e-44d3-b0df-bcbc46d93160">
-	<property name="com.jaspersoft.studio.data.sql.tables" value="ZGJvLiJWV19SRVBPUlRFX0lOVkVOVEFSSU8iIEFTICw2MywzMCwzODllMGU4Ny0xN2Y4LTRlOTYt&#xa;YjZjNi1lNmY3N2MzN2Q4NjY7"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="adaptador sistema taller ins"/>
-	<style name="Title" forecolor="#2C3E50" fontName="Arial" fontSize="20.0" bold="true"/>
-	<style name="SubTitle" forecolor="#34495E" fontName="Arial" fontSize="12.0" bold="true"/>
-	<style name="Column header" forecolor="#FFFFFF" fontName="Arial" fontSize="10.0" bold="true"/>
-	<style name="Detail" fontName="Arial" fontSize="9.0"/>
-	<style name="Row" mode="Transparent">
-		<conditionalStyle backcolor="#F8F9FA">
-			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
-		</conditionalStyle>
-	</style>
-	<query language="SQL"><![CDATA[SELECT "ID Producto",
-	"Nombre Producto",
-	"Categoría",
-	"Descripción",
-	"Stock Actual",
-	"Stock Mínimo",
-	"Costo Unitario",
-	"Precio Venta",
-	"Margen Ganancia",
-	"Margen %",	
-	"Fecha Registro",
-	"Valorización Costo",
-	"Nivel Stock",
-	"Valorización Venta"
-FROM dbo."VW_REPORTE_INVENTARIO"]]></query>
-	<field name="ID Producto" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="ID Producto"/>
-		<property name="com.jaspersoft.studio.field.label" value="ID Producto"/>
-	</field>
-	<field name="Nombre Producto" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="Nombre Producto"/>
-		<property name="com.jaspersoft.studio.field.label" value="Nombre Producto"/>
-	</field>
-	<field name="Categoría" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="Categoría"/>
-		<property name="com.jaspersoft.studio.field.label" value="Categoría"/>
-	</field>
-	<field name="Descripción" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="Descripción"/>
-		<property name="com.jaspersoft.studio.field.label" value="Descripción"/>
-	</field>
-	<field name="Stock Actual" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="Stock Actual"/>
-		<property name="com.jaspersoft.studio.field.label" value="Stock Actual"/>
-	</field>
-	<field name="Stock Mínimo" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.name" value="Stock Mínimo"/>
-		<property name="com.jaspersoft.studio.field.label" value="Stock Mínimo"/>
-	</field>
-	<field name="Costo Unitario" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.name" value="Costo Unitario"/>
-		<property name="com.jaspersoft.studio.field.label" value="Costo Unitario"/>
-	</field>
-	<field name="Precio Venta" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.name" value="Precio Venta"/>
-		<property name="com.jaspersoft.studio.field.label" value="Precio Venta"/>
-	</field>
-	<field name="Margen Ganancia" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.name" value="Margen Ganancia"/>
-		<property name="com.jaspersoft.studio.field.label" value="Margen Ganancia"/>
-	</field>
-	<field name="Margen %" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.name" value="Margen %"/>
-		<property name="com.jaspersoft.studio.field.label" value="Margen %"/>
-	</field>
-	<field name="Fecha Registro" class="java.sql.Timestamp">
-		<property name="com.jaspersoft.studio.field.name" value="Fecha Registro"/>
-		<property name="com.jaspersoft.studio.field.label" value="Fecha Registro"/>
-	</field>
-	<field name="Nivel Stock" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="Nivel Stock"/>
-		<property name="com.jaspersoft.studio.field.label" value="Nivel Stock"/>
-	</field>
-	<background splitType="Stretch"/>
-	<title height="62" splitType="Stretch">
-		<element kind="staticText" uuid="bc1ce1da-8232-46ea-be55-cec4abb986dd" x="270" y="0" width="263" height="62" vTextAlign="Middle" style="Title">
-			<text><![CDATA[Inventario disponible]]></text>
-		</element>
-	</title>
-	<pageHeader splitType="Stretch"/>
-	<columnHeader height="16" splitType="Stretch">
-		<element kind="line" uuid="e9d2002a-c8ee-4649-a258-640dad29110c" positionType="FixRelativeToBottom" x="0" y="15" width="802" height="1">
-			<pen lineWidth="0.5" lineColor="#999999"/>
-		</element>
-		<element kind="staticText" uuid="d2fe647a-668d-4d39-96b5-750496522dea" x="0" y="0" width="25" height="15" forecolor="#736343" style="Column header">
-			<text><![CDATA[ID Producto]]></text>
-			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7eb1f921-4510-47ff-86fd-4240e6ab48f8"/>
-		</element>
-		<element kind="staticText" uuid="7bb0c346-98c1-47f0-8780-d12acb660de5" x="25" y="0" width="75" height="15" forecolor="#736343" style="Column header">
-			<text><![CDATA[Nombre Producto]]></text>
-			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d2e805f3-e81a-4adc-af9b-26043133f655"/>
-		</element>
-		<element kind="staticText" uuid="6a3c96b5-71bb-4e5d-9d48-dd3cfb54e45d" x="100" y="0" width="75" height="15" forecolor="#736343" style="Column header">
-			<text><![CDATA[Categoría]]></text>
-			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="553f488f-e9ce-40a2-a04c-16bc8f4657e2"/>
-		</element>
-		<element kind="staticText" uuid="605835cc-b097-4e71-8ace-f3e9b827ace2" x="175" y="0" width="75" height="15" forecolor="#736343" style="Column header">
-			<text><![CDATA[Descripción]]></text>
-			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a0df2292-c73b-4c26-84e8-b59d9022f3bc"/>
-		</element>
-		<element kind="staticText" uuid="51a32bc6-995b-4ce0-91fb-d717bb6cff34" x="250" y="0" width="50" height="15" forecolor="#736343" style="Column header">
-			<text><![CDATA[Stock Actual]]></text>
-			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="60a7cb75-44cc-492c-8a89-46b46cb07d2d"/>
-		</element>
-		<element kind="staticText" uuid="f440657b-8857-4a88-8830-877f3c46807e" x="300" y="0" width="50" height="15" forecolor="#736343" style="Column header">
-			<text><![CDATA[Stock Mínimo]]></text>
-			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7f833eaf-b08c-4051-b84e-d20adc6d9ee5"/>
-		</element>
-		<element kind="staticText" uuid="f304574c-45bb-4524-83c5-29564ec0f388" x="350" y="0" width="50" height="15" forecolor="#736343" style="Column header">
-			<text><![CDATA[Costo Unitario]]></text>
-			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3d38714a-dc29-42fc-990d-f5737b0fcfd7"/>
-		</element>
-		<element kind="staticText" uuid="f01fbb48-59d2-4be4-999d-9a680a4bfa25" x="400" y="0" width="50" height="15" forecolor="#736343" style="Column header">
-			<text><![CDATA[Precio Venta]]></text>
-			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="39a21ee7-c692-488d-b0d4-8ee3e6b43e6d"/>
-		</element>
-		<element kind="staticText" uuid="5fd14fe7-d51e-4a08-b335-7366ff93024d" x="450" y="0" width="50" height="15" forecolor="#736343" style="Column header">
-			<text><![CDATA[Margen Ganancia]]></text>
-			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f934255c-86d0-4530-858d-f697bdd3092b"/>
-		</element>
-		<element kind="staticText" uuid="136d764b-e1d5-48ee-8084-f6a260ebaf78" x="500" y="0" width="50" height="15" forecolor="#736343" style="Column header">
-			<text><![CDATA[Margen %]]></text>
-			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8a477801-8ac7-4978-a4c9-86076a806365"/>
-		</element>
-		<element kind="staticText" uuid="f91a8d3b-b1d9-47ee-9f58-2a1adfb977b8" x="550" y="0" width="100" height="15" forecolor="#736343" style="Column header">
-			<text><![CDATA[Fecha Registro]]></text>
-			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d12914aa-09ab-40d5-a10c-38db23b1b0a8"/>
-		</element>
-		<element kind="staticText" uuid="fbd13e1f-9bd2-477d-aade-74d5de380432" x="650" y="0" width="100" height="15" forecolor="#736343" style="Column header">
-			<text><![CDATA[Nivel Stock]]></text>
-			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="23d47f76-0303-402d-ad65-f30884ee92fd"/>
-		</element>
-	</columnHeader>
-	<detail>
-		<band height="15" splitType="Stretch">
-			<element kind="frame" uuid="fa7cec56-4ec1-48e6-a26e-7266a995d174" mode="Opaque" x="0" y="0" width="802" height="15" style="Row">
-				<element kind="textField" uuid="97dee30c-507c-41f8-ad62-380cf2c3e3fa" x="0" y="0" width="25" height="15" textAdjust="StretchHeight" style="Detail">
-					<expression><![CDATA[$F{ID Producto}]]></expression>
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7eb1f921-4510-47ff-86fd-4240e6ab48f8"/>
-				</element>
-				<element kind="textField" uuid="45f924fd-2bc1-4d7d-be56-43f32a958ec3" x="25" y="0" width="75" height="15" textAdjust="StretchHeight" style="Detail">
-					<expression><![CDATA[$F{Nombre Producto}]]></expression>
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d2e805f3-e81a-4adc-af9b-26043133f655"/>
-				</element>
-				<element kind="textField" uuid="8a6da5f5-bd3d-4311-a2f1-a8cbf8e18fa2" x="100" y="0" width="75" height="15" textAdjust="StretchHeight" style="Detail">
-					<expression><![CDATA[$F{Categoría}]]></expression>
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="553f488f-e9ce-40a2-a04c-16bc8f4657e2"/>
-				</element>
-				<element kind="textField" uuid="362990c0-feff-4a30-9b59-9d64cd2750be" x="175" y="0" width="75" height="15" textAdjust="StretchHeight" style="Detail">
-					<expression><![CDATA[$F{Descripción}]]></expression>
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a0df2292-c73b-4c26-84e8-b59d9022f3bc"/>
-				</element>
-				<element kind="textField" uuid="06a5c37e-27a4-45bb-aca8-d49f30ef0f81" x="250" y="0" width="50" height="15" textAdjust="StretchHeight" style="Detail">
-					<expression><![CDATA[$F{Stock Actual}]]></expression>
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="60a7cb75-44cc-492c-8a89-46b46cb07d2d"/>
-				</element>
-				<element kind="textField" uuid="c2dd1960-6279-4ba3-86bd-3a005d24160c" x="300" y="0" width="50" height="15" textAdjust="StretchHeight" style="Detail">
-					<expression><![CDATA[$F{Stock Mínimo}]]></expression>
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7f833eaf-b08c-4051-b84e-d20adc6d9ee5"/>
-				</element>
-				<element kind="textField" uuid="9c3a266a-0dfb-442f-a3ee-6b4ae0d0c9ad" x="350" y="0" width="50" height="15" textAdjust="StretchHeight" style="Detail">
-					<expression><![CDATA["$" + $F{Costo Unitario}]]></expression>
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3d38714a-dc29-42fc-990d-f5737b0fcfd7"/>
-				</element>
-				<element kind="textField" uuid="47beb057-ec23-4466-b6ae-ce414d71dae8" x="400" y="0" width="50" height="15" textAdjust="StretchHeight" style="Detail">
-					<expression><![CDATA["$" + $F{Precio Venta}]]></expression>
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="39a21ee7-c692-488d-b0d4-8ee3e6b43e6d"/>
-				</element>
-				<element kind="textField" uuid="783f8a3b-ed99-44c2-ab01-e8a60a985b7f" x="450" y="0" width="50" height="15" textAdjust="StretchHeight" style="Detail">
-					<expression><![CDATA["$" + $F{Margen Ganancia}]]></expression>
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f934255c-86d0-4530-858d-f697bdd3092b"/>
-				</element>
-				<element kind="textField" uuid="7ff060fe-ef38-4ef9-9bcd-980ef5787249" x="500" y="0" width="50" height="15" textAdjust="StretchHeight" style="Detail">
-					<expression><![CDATA[$F{Margen %} + "%"]]></expression>
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8a477801-8ac7-4978-a4c9-86076a806365"/>
-				</element>
-				<element kind="textField" uuid="994c4d21-cf1c-4c70-bd15-9708d5b254f5" x="550" y="0" width="100" height="15" textAdjust="StretchHeight" style="Detail">
-					<expression><![CDATA[$F{Fecha Registro}]]></expression>
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d12914aa-09ab-40d5-a10c-38db23b1b0a8"/>
-				</element>
-				<element kind="textField" uuid="8c47d687-fad5-4664-b51c-054b8182b3eb" x="650" y="0" width="100" height="15" textAdjust="StretchHeight" style="Detail">
-					<expression><![CDATA[$F{Nivel Stock}]]></expression>
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="23d47f76-0303-402d-ad65-f30884ee92fd"/>
-				</element>
-			</element>
-		</band>
-	</detail>
-	<columnFooter height="6" splitType="Stretch">
-		<element kind="line" uuid="fa5e88d5-a011-4e32-8f12-ce923f903111" positionType="FixRelativeToBottom" x="0" y="3" width="802" height="1">
-			<pen lineWidth="0.5" lineColor="#999999"/>
-		</element>
-	</columnFooter>
-	<pageFooter height="25" splitType="Stretch">
-		<element kind="frame" uuid="5d8169bd-4a75-48c8-8a68-6d3ad5ba9402" mode="Opaque" x="-21" y="1" width="843" height="24" forecolor="#D0B48E" backcolor="#F2EBDF">
-			<element kind="textField" uuid="e5e27efa-b599-499b-9ca3-848cb511cb7b" x="783" y="1" width="40" height="20" forecolor="#736343" fontSize="10.0" evaluationTime="Report" bold="false" vTextAlign="Middle" style="Column header">
-				<expression><![CDATA[" " + $V{PAGE_NUMBER}]]></expression>
-			</element>
-			<element kind="textField" uuid="18cfe1ca-f7d6-48b0-9827-28578b42a5e0" x="703" y="1" width="80" height="20" forecolor="#736343" fontSize="10.0" bold="false" hTextAlign="Right" vTextAlign="Middle" style="Column header">
-				<expression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></expression>
-			</element>
-			<element kind="textField" uuid="fbce24bb-3cb1-44a3-8eec-8c067ddbe5b5" x="22" y="1" width="197" height="20" forecolor="#736343" fontSize="10.0" pattern="EEEEE dd MMMMM yyyy" bold="false" vTextAlign="Middle" style="Column header">
-				<expression><![CDATA[new java.util.Date()]]></expression>
-			</element>
-		</element>
-	</pageFooter>
-	<summary splitType="Stretch"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" 
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" 
+              name="inventario_disponible" 
+              language="java" 
+              pageWidth="842" 
+              pageHeight="595" 
+              orientation="Landscape" 
+              columnWidth="802" 
+              leftMargin="20" 
+              rightMargin="20" 
+              topMargin="20" 
+              bottomMargin="20" 
+              uuid="df013db5-f76e-44d3-b0df-bcbc46d93160">
+    
+    <property name="com.jaspersoft.studio.data.sql.tables" value="ZGJvLiJWV19SRVBPUlRFX0lOVkVOVEFSSU8iIEFTICw2MywzMCwzODllMGU4Ny0xN2Y4LTRlOTYtYjZjNi1lNmY3N2MzN2Q4NjY7"/>
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="adaptador sistema taller ins"/>
+    
+    <style name="Title" forecolor="#2C3E50" fontName="Arial" fontSize="20" isBold="true"/>
+    <style name="SubTitle" forecolor="#34495E" fontName="Arial" fontSize="12" isBold="true"/>
+    <style name="Column header" forecolor="#FFFFFF" fontName="Arial" fontSize="10" isBold="true"/>
+    <style name="Detail" fontName="Arial" fontSize="9"/>
+    <style name="Row" mode="Transparent">
+        <conditionalStyle>
+            <conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+            <style backcolor="#F8F9FA"/>
+        </conditionalStyle>
+    </style>
+    
+    <queryString><![CDATA[SELECT "ID Producto",
+    "Nombre Producto",
+    "Categoría",
+    "Descripción",
+    "Stock Actual",
+    "Stock Mínimo",
+    "Costo Unitario",
+    "Precio Venta",
+    "Margen Ganancia",
+    "Margen %",    
+    "Fecha Registro",
+    "Valorización Costo",
+    "Nivel Stock",
+    "Valorización Venta"
+FROM dbo."VW_REPORTE_INVENTARIO"]]></queryString>
+    
+    <field name="ID Producto" class="java.lang.Integer"/>
+    <field name="Nombre Producto" class="java.lang.String"/>
+    <field name="Categoría" class="java.lang.String"/>
+    <field name="Descripción" class="java.lang.String"/>
+    <field name="Stock Actual" class="java.lang.Integer"/>
+    <field name="Stock Mínimo" class="java.lang.Integer"/>
+    <field name="Costo Unitario" class="java.math.BigDecimal"/>
+    <field name="Precio Venta" class="java.math.BigDecimal"/>
+    <field name="Margen Ganancia" class="java.math.BigDecimal"/>
+    <field name="Margen %" class="java.math.BigDecimal"/>
+    <field name="Fecha Registro" class="java.sql.Timestamp"/>
+    <field name="Nivel Stock" class="java.lang.String"/>
+    
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    
+    <title>
+        <band height="62" splitType="Stretch">
+            <staticText>
+                <reportElement uuid="bc1ce1da-8232-46ea-be55-cec4abb986dd" x="270" y="0" width="263" height="62"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" size="20" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Inventario disponible]]></text>
+            </staticText>
+        </band>
+    </title>
+    
+    <pageHeader>
+        <band splitType="Stretch"/>
+    </pageHeader>
+    
+    <columnHeader>
+        <band height="16" splitType="Stretch">
+            <line>
+                <reportElement uuid="e9d2002a-c8ee-4649-a258-640dad29110c" x="0" y="15" width="802" height="1"/>
+                <graphicElement>
+                    <pen lineWidth="0.5" lineColor="#999999"/>
+                </graphicElement>
+            </line>
+            <staticText>
+                <reportElement uuid="d2fe647a-668d-4d39-96b5-750496522dea" x="0" y="0" width="25" height="15" forecolor="#736343"/>
+                <textElement>
+                    <font fontName="Arial" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[ID Producto]]></text>
+            </staticText>
+            <staticText>
+                <reportElement uuid="7bb0c346-98c1-47f0-8780-d12acb660de5" x="25" y="0" width="75" height="15" forecolor="#736343"/>
+                <textElement>
+                    <font fontName="Arial" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Nombre Producto]]></text>
+            </staticText>
+            <staticText>
+                <reportElement uuid="6a3c96b5-71bb-4e5d-9d48-dd3cfb54e45d" x="100" y="0" width="75" height="15" forecolor="#736343"/>
+                <textElement>
+                    <font fontName="Arial" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Categoría]]></text>
+            </staticText>
+            <staticText>
+                <reportElement uuid="605835cc-b097-4e71-8ace-f3e9b827ace2" x="175" y="0" width="75" height="15" forecolor="#736343"/>
+                <textElement>
+                    <font fontName="Arial" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Descripción]]></text>
+            </staticText>
+            <staticText>
+                <reportElement uuid="51a32bc6-995b-4ce0-91fb-d717bb6cff34" x="250" y="0" width="50" height="15" forecolor="#736343"/>
+                <textElement>
+                    <font fontName="Arial" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Stock Actual]]></text>
+            </staticText>
+            <staticText>
+                <reportElement uuid="f440657b-8857-4a88-8830-877f3c46807e" x="300" y="0" width="50" height="15" forecolor="#736343"/>
+                <textElement>
+                    <font fontName="Arial" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Stock Mínimo]]></text>
+            </staticText>
+            <staticText>
+                <reportElement uuid="f304574c-45bb-4524-83c5-29564ec0f388" x="350" y="0" width="50" height="15" forecolor="#736343"/>
+                <textElement>
+                    <font fontName="Arial" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Costo Unitario]]></text>
+            </staticText>
+            <staticText>
+                <reportElement uuid="f01fbb48-59d2-4be4-999d-9a680a4bfa25" x="400" y="0" width="50" height="15" forecolor="#736343"/>
+                <textElement>
+                    <font fontName="Arial" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Precio Venta]]></text>
+            </staticText>
+            <staticText>
+                <reportElement uuid="5fd14fe7-d51e-4a08-b335-7366ff93024d" x="450" y="0" width="50" height="15" forecolor="#736343"/>
+                <textElement>
+                    <font fontName="Arial" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Margen Ganancia]]></text>
+            </staticText>
+            <staticText>
+                <reportElement uuid="136d764b-e1d5-48ee-8084-f6a260ebaf78" x="500" y="0" width="50" height="15" forecolor="#736343"/>
+                <textElement>
+                    <font fontName="Arial" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Margen %]]></text>
+            </staticText>
+            <staticText>
+                <reportElement uuid="f91a8d3b-b1d9-47ee-9f58-2a1adfb977b8" x="550" y="0" width="100" height="15" forecolor="#736343"/>
+                <textElement>
+                    <font fontName="Arial" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Fecha Registro]]></text>
+            </staticText>
+            <staticText>
+                <reportElement uuid="fbd13e1f-9bd2-477d-aade-74d5de380432" x="650" y="0" width="100" height="15" forecolor="#736343"/>
+                <textElement>
+                    <font fontName="Arial" size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Nivel Stock]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    
+    <detail>
+        <band height="15" splitType="Stretch">
+            <frame>
+                <reportElement uuid="fa7cec56-4ec1-48e6-a26e-7266a995d174" mode="Opaque" x="0" y="0" width="802" height="15" style="Row"/>
+                <textField>
+                    <reportElement uuid="97dee30c-507c-41f8-ad62-380cf2c3e3fa" x="0" y="0" width="25" height="15"/>
+                    <textElement verticalAlignment="Middle">
+                        <font fontName="Arial" size="9"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{ID Producto}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement uuid="45f924fd-2bc1-4d7d-be56-43f32a958ec3" x="25" y="0" width="75" height="15"/>
+                    <textElement verticalAlignment="Middle">
+                        <font fontName="Arial" size="9"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{Nombre Producto}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement uuid="8a6da5f5-bd3d-4311-a2f1-a8cbf8e18fa2" x="100" y="0" width="75" height="15"/>
+                    <textElement verticalAlignment="Middle">
+                        <font fontName="Arial" size="9"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{Categoría}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement uuid="362990c0-feff-4a30-9b59-9d64cd2750be" x="175" y="0" width="75" height="15"/>
+                    <textElement verticalAlignment="Middle">
+                        <font fontName="Arial" size="9"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{Descripción}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement uuid="06a5c37e-27a4-45bb-aca8-d49f30ef0f81" x="250" y="0" width="50" height="15"/>
+                    <textElement verticalAlignment="Middle">
+                        <font fontName="Arial" size="9"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{Stock Actual}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement uuid="c2dd1960-6279-4ba3-86bd-3a005d24160c" x="300" y="0" width="50" height="15"/>
+                    <textElement verticalAlignment="Middle">
+                        <font fontName="Arial" size="9"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{Stock Mínimo}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement uuid="9c3a266a-0dfb-442f-a3ee-6b4ae0d0c9ad" x="350" y="0" width="50" height="15"/>
+                    <textElement verticalAlignment="Middle">
+                        <font fontName="Arial" size="9"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA["$" + $F{Costo Unitario}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement uuid="47beb057-ec23-4466-b6ae-ce414d71dae8" x="400" y="0" width="50" height="15"/>
+                    <textElement verticalAlignment="Middle">
+                        <font fontName="Arial" size="9"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA["$" + $F{Precio Venta}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement uuid="783f8a3b-ed99-44c2-ab01-e8a60a985b7f" x="450" y="0" width="50" height="15"/>
+                    <textElement verticalAlignment="Middle">
+                        <font fontName="Arial" size="9"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA["$" + $F{Margen Ganancia}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement uuid="7ff060fe-ef38-4ef9-9bcd-980ef5787249" x="500" y="0" width="50" height="15"/>
+                    <textElement verticalAlignment="Middle">
+                        <font fontName="Arial" size="9"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{Margen %} + "%"]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement uuid="994c4d21-cf1c-4c70-bd15-9708d5b254f5" x="550" y="0" width="100" height="15"/>
+                    <textElement verticalAlignment="Middle">
+                        <font fontName="Arial" size="9"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{Fecha Registro}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement uuid="8c47d687-fad5-4664-b51c-054b8182b3eb" x="650" y="0" width="100" height="15"/>
+                    <textElement verticalAlignment="Middle">
+                        <font fontName="Arial" size="9"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[$F{Nivel Stock}]]></textFieldExpression>
+                </textField>
+            </frame>
+        </band>
+    </detail>
+    
+    <columnFooter>
+        <band height="6" splitType="Stretch">
+            <line>
+                <reportElement uuid="fa5e88d5-a011-4e32-8f12-ce923f903111" x="0" y="3" width="802" height="1"/>
+                <graphicElement>
+                    <pen lineWidth="0.5" lineColor="#999999"/>
+                </graphicElement>
+            </line>
+        </band>
+    </columnFooter>
+    
+    <pageFooter>
+        <band height="25" splitType="Stretch">
+            <frame>
+                <reportElement uuid="5d8169bd-4a75-48c8-8a68-6d3ad5ba9402" mode="Opaque" x="-21" y="1" width="843" height="24" forecolor="#D0B48E" backcolor="#F2EBDF"/>
+                <textField evaluationTime="Report">
+                    <reportElement uuid="e5e27efa-b599-499b-9ca3-848cb511cb7b" x="783" y="1" width="40" height="20" forecolor="#736343"/>
+                    <textElement verticalAlignment="Middle">
+                        <font fontName="Arial" size="10"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+                </textField>
+                <textField>
+                    <reportElement uuid="18cfe1ca-f7d6-48b0-9827-28578b42a5e0" x="703" y="1" width="80" height="20" forecolor="#736343"/>
+                    <textElement textAlignment="Right" verticalAlignment="Middle">
+                        <font fontName="Arial" size="10"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+                </textField>
+                <textField pattern="EEEEE dd MMMMM yyyy">
+                    <reportElement uuid="fbce24bb-3cb1-44a3-8eec-8c067ddbe5b5" x="22" y="1" width="197" height="20" forecolor="#736343"/>
+                    <textElement verticalAlignment="Middle">
+                        <font fontName="Arial" size="10"/>
+                    </textElement>
+                    <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+                </textField>
+            </frame>
+        </band>
+    </pageFooter>
+    
+    <summary>
+        <band splitType="Stretch"/>
+    </summary>
 </jasperReport>

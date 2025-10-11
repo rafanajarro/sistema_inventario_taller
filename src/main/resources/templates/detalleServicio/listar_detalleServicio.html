@@ -51,7 +51,7 @@
                                     <td th:text="${det.idProducto.nombreProducto}"></td>
                                     <td th:text="${det.cantidadUsada}"></td>
 
-                                    <td th:text="${det.subtotal}"></td>
+                                    <td th:text="'$' + ${det.subtotal}"></td>
                                     <td>
                                         <!-- Editar -->
                                         <a th:href="@{/detalleServicio/editar/{id}(id=${det.idDetalle})}">

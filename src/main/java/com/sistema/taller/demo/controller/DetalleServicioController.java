@@ -132,16 +132,16 @@ public class DetalleServicioController {
     }
 
     // Editar formulario
- @GetMapping("detalleServicio/editar/{id}")
+    @GetMapping("detalleServicio/editar/{id}")
     public String editar(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
         try {
-              DetalleServicio detalle= detalleServicioService.obtenerPorId(id);
+            DetalleServicio detalle = detalleServicioService.obtenerPorId(id);
             if (detalle == null) {
                 redirectAttributes.addFlashAttribute("mensaje", "El detalle no existe.");
                 redirectAttributes.addFlashAttribute("tipoMensaje", "error");
                 return "redirect:/detalleServicio";
             }
-
+            
             model.addAttribute("detalleServicio", detalle);
             model.addAttribute("productos", productoService.obtenerTodo());
             model.addAttribute("servicios", servicioService.listar());
@@ -152,93 +152,102 @@ public class DetalleServicioController {
             redirectAttributes.addFlashAttribute("tipoMensaje", "error");
             return "redirect:/detalleServicio";
         }
-    }@PostMapping("/detalleServicio/editar/{id}")
-public String actualizarDetalleServicio(
-        @PathVariable("id") Integer id,
-        @RequestParam("idServicio") Integer idServicio,
-        @RequestParam("idProducto") Integer idProducto,
-        @RequestParam("cantidadUsada") Integer cantidadUsada,
-        RedirectAttributes redirectAttributes) {
-
-    try {
-        // Buscar detalle existente
-        DetalleServicio detalleExistente = detalleServicioService.obtenerPorId(id);
-        if (detalleExistente == null) {
-            redirectAttributes.addFlashAttribute("mensaje", "El detalle de servicio no existe.");
-            redirectAttributes.addFlashAttribute("tipoMensaje", "error");
-            return "redirect:/detalleServicio";
-        }
-
-        // Buscar inventario actual del producto
-        Inventario inventario = inventarioRepository.findByProductoIdProducto(idProducto)
-                .orElseThrow(() -> new RuntimeException("Producto sin inventario"));
-
-        // Calcular diferencia de stock (por si cambió la cantidad usada)
-        int diferencia = cantidadUsada - detalleExistente.getCantidadUsada();
-
-        // Verificar stock suficiente si se está usando más producto
-        if (diferencia > 0 && inventario.getStockActual() < diferencia) {
-            redirectAttributes.addFlashAttribute("mensaje",
-                    "Stock insuficiente. Disponible: " + inventario.getStockActual());
-            redirectAttributes.addFlashAttribute("tipoMensaje", "error");
-            return "redirect:/detalleServicio";
-        }
-
-        // Buscar entidades completas
-        Servicio servicio = servicioService.buscarPorId(idServicio);
-        Producto producto = productoService.obtenertPorProducto(idProducto);
-
-        // Calcular subtotal
-        BigDecimal subtotal = inventario.getPrecioVenta().multiply(BigDecimal.valueOf(cantidadUsada));
-
-        // Actualizar detalle
-        detalleExistente.setIdServicio(servicio);
-        detalleExistente.setIdProducto(producto);
-        detalleExistente.setCantidadUsada(cantidadUsada);
-        detalleExistente.setSubtotal(subtotal.doubleValue());
-        detalleServicioService.guardar(detalleExistente);
-
-        // Actualizar inventario: devolver stock previo y luego restar el nuevo
-        inventario.setStockActual(inventario.getStockActual() - diferencia);
-        inventarioRepository.save(inventario);
-
-        redirectAttributes.addFlashAttribute("mensaje", "Detalle actualizado y stock ajustado correctamente.");
-        redirectAttributes.addFlashAttribute("tipoMensaje", "success");
-
-    } catch (Exception e) {
-        redirectAttributes.addFlashAttribute("mensaje", "Error al actualizar detalle: " + e.getMessage());
-        redirectAttributes.addFlashAttribute("tipoMensaje", "error");
     }
 
-   // 🔁 Redirige al listado del servicio actualizado
-        return "redirect:/detalleServicio/listar/" + idServicio;
-}
-
-    // Editar detalle
-    /*@PostMapping("/detalleServicio/editar/{id}")
-    public String editarDetalleServicio(@PathVariable Integer id,
-            @ModelAttribute DetalleServicio detalleServicio,
+    @PostMapping("/detalleServicio/editar/{id}")
+    public String actualizarDetalleServicio(
+            @PathVariable("id") Integer id,
+            @RequestParam("idServicio") Integer idServicio,
+            @RequestParam("idProducto") Integer idProducto,
+            @RequestParam("cantidadUsada") Integer cantidadUsada,
             RedirectAttributes redirectAttributes) {
+
         try {
-            DetalleServicio detalleServicioExistente = detalleServicioService.obtenerPorId(id);
-            if (detalleServicioExistente == null) {
+            // Buscar detalle existente
+            DetalleServicio detalleExistente = detalleServicioService.obtenerPorId(id);
+            if (detalleExistente == null) {
+                redirectAttributes.addFlashAttribute("mensaje", "El detalle de servicio no existe.");
+                redirectAttributes.addFlashAttribute("tipoMensaje", "error");
                 return "redirect:/detalleServicio";
             }
 
-            detalleServicioExistente.setIdServicio(detalleServicio.getIdServicio());
-            detalleServicioExistente.setIdProducto(detalleServicio.getIdProducto());
-            detalleServicioExistente.setCantidadUsada(detalleServicio.getCantidadUsada());
-            detalleServicioExistente.setSubtotal(detalleServicio.getSubtotal());
+            // Buscar inventario actual del producto
+            Inventario inventario = inventarioRepository.findByProductoIdProducto(idProducto)
+                    .orElseThrow(() -> new RuntimeException("Producto sin inventario"));
 
-            detalleServicioService.guardar(detalleServicioExistente);
-            redirectAttributes.addFlashAttribute("mensaje", "El detalle se actualizó correctamente.");
+            // Calcular diferencia de stock (por si cambió la cantidad usada)
+            int diferencia = cantidadUsada - detalleExistente.getCantidadUsada();
+
+            // Verificar stock suficiente si se está usando más producto
+            if (diferencia > 0 && inventario.getStockActual() < diferencia) {
+                redirectAttributes.addFlashAttribute("mensaje",
+                        "Stock insuficiente. Disponible: " + inventario.getStockActual());
+                redirectAttributes.addFlashAttribute("tipoMensaje", "error");
+                return "redirect:/detalleServicio";
+            }
+
+            // Buscar entidades completas
+            Servicio servicio = servicioService.buscarPorId(idServicio);
+            Producto producto = productoService.obtenertPorProducto(idProducto);
+
+            // Calcular subtotal
+            BigDecimal subtotal = inventario.getPrecioVenta().multiply(BigDecimal.valueOf(cantidadUsada));
+
+            // Actualizar detalle
+            detalleExistente.setIdServicio(servicio);
+            detalleExistente.setIdProducto(producto);
+            detalleExistente.setCantidadUsada(cantidadUsada);
+            detalleExistente.setSubtotal(subtotal.doubleValue());
+            detalleServicioService.guardar(detalleExistente);
+
+            // Actualizar inventario: devolver stock previo y luego restar el nuevo
+            inventario.setStockActual(inventario.getStockActual() - diferencia);
+            inventarioRepository.save(inventario);
+
+            redirectAttributes.addFlashAttribute("mensaje", "Detalle actualizado y stock ajustado correctamente.");
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
+
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensaje", "Ocurrió un error al editar el detalle.");
+            redirectAttributes.addFlashAttribute("mensaje", "Error al actualizar detalle: " + e.getMessage());
             redirectAttributes.addFlashAttribute("tipoMensaje", "error");
         }
-        return "redirect:/detalleServicio";
-    }*/
+
+        // 🔁 Redirige al listado del servicio actualizado
+        return "redirect:/detalleServicio/listar/" + idServicio;
+    }
+
+    // Editar detalle
+    /*
+     * @PostMapping("/detalleServicio/editar/{id}")
+     * public String editarDetalleServicio(@PathVariable Integer id,
+     * 
+     * @ModelAttribute DetalleServicio detalleServicio,
+     * RedirectAttributes redirectAttributes) {
+     * try {
+     * DetalleServicio detalleServicioExistente =
+     * detalleServicioService.obtenerPorId(id);
+     * if (detalleServicioExistente == null) {
+     * return "redirect:/detalleServicio";
+     * }
+     * 
+     * detalleServicioExistente.setIdServicio(detalleServicio.getIdServicio());
+     * detalleServicioExistente.setIdProducto(detalleServicio.getIdProducto());
+     * detalleServicioExistente.setCantidadUsada(detalleServicio.getCantidadUsada())
+     * ;
+     * detalleServicioExistente.setSubtotal(detalleServicio.getSubtotal());
+     * 
+     * detalleServicioService.guardar(detalleServicioExistente);
+     * redirectAttributes.addFlashAttribute("mensaje",
+     * "El detalle se actualizó correctamente.");
+     * redirectAttributes.addFlashAttribute("tipoMensaje", "success");
+     * } catch (Exception e) {
+     * redirectAttributes.addFlashAttribute("mensaje",
+     * "Ocurrió un error al editar el detalle.");
+     * redirectAttributes.addFlashAttribute("tipoMensaje", "error");
+     * }
+     * return "redirect:/detalleServicio";
+     * }
+     */
 
     @GetMapping("/detalleServicio/listar/{id}")
     public String listarDetalleServicioid(@PathVariable("id") Integer id, Model model) {
