@@ -61,6 +61,13 @@
                                         </span>
                                     </td>
                                     <td>
+                                        <!-- Aumentar Stock -->
+                                        <button type="button" class="btn btn-link p-0 btn-aumentar-stock"
+                                            th:data-idinventario="${inv.idInventario}"
+                                            th:data-nombreproducto="${inv.producto.nombreProducto}" title="Aumentar Stock">
+                                            <i class="fas fa-plus-circle" style="color: #085691;"></i>
+                                        </button>
+
                                         <!-- Editar -->
                                         <a th:href="@{/inventario/editar/{id}(id=${inv.idInventario})}" title="Editar">
                                             <i class="fas fa-edit" style="color: #085691;"></i>
@@ -86,8 +93,58 @@
         </div>
     </div>
 
+    <!-- MODAL AUMENTAR STOCK -->
+    <div class="modal fade" id="modalAumentarStock" tabindex="-1" aria-labelledby="modalAumentarStockLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form th:action="@{/inventario/aumentarStock}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalAumentarStockLabel">Aumentar Stock</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="idInventario" name="idInventario">
+
+                        <div class="mb-3">
+                            <label for="productoNombre" class="form-label">Producto</label>
+                            <input type="text" id="productoNombre" class="form-control" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="cantidad" class="form-label">Cantidad a agregar</label>
+                            <input type="number" id="cantidad" name="cantidad" class="form-control" required min="1">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Actualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- JS Components -->
     <div th:replace="fragments/jsComponents :: jsScripts"></div>
-</body>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const botones = document.querySelectorAll('.btn-aumentar-stock');
+
+            botones.forEach(boton => {
+                boton.addEventListener('click', function () {
+                    const idInventario = this.getAttribute('data-idinventario');
+                    const nombreProducto = this.getAttribute('data-nombreproducto');
+
+                    document.getElementById('idInventario').value = idInventario;
+                    document.getElementById('productoNombre').value = nombreProducto;
+
+                    const modalElement = document.getElementById('modalAumentarStock');
+                    const modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                });
+            });
+        });
+    </script>
+</body>
 </html>

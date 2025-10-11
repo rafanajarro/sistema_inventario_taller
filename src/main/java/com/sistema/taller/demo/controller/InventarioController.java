@@ -9,7 +9,10 @@ import com.sistema.taller.demo.service.ProductoService;
 import com.sistema.taller.demo.service.UsuarioService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -98,6 +101,30 @@ public class InventarioController {
         }
         return "redirect:/inventario";
     }
+   @PostMapping("/aumentarStock")
+public String aumentarStock(@RequestParam("idInventario") Integer idInventario,
+                            @RequestParam("cantidad") Integer cantidad,
+                            RedirectAttributes redirectAttributes) {
+    try {
+        Inventario inv = inventarioService.obtenerPorID(idInventario);
+        if (inv == null) {
+            throw new RuntimeException("Inventario no encontrado");
+        }
+
+        inv.setStockActual(inv.getStockActual() + cantidad);
+        inventarioService.guardar(inv);
+
+        redirectAttributes.addFlashAttribute("mensaje", "Stock actualizado correctamente.");
+        redirectAttributes.addFlashAttribute("tipoMensaje", "success");
+    } catch (Exception e) {
+        e.printStackTrace();
+        redirectAttributes.addFlashAttribute("mensaje", "Error al actualizar el stock: " + e.getMessage());
+        redirectAttributes.addFlashAttribute("tipoMensaje", "error");
+    }
+
+    return "redirect:/inventario";
+}
+
 
     // 📌 Eliminar inventario
     @GetMapping("/eliminar/{id}")
@@ -113,4 +140,30 @@ public class InventarioController {
         }
         return "redirect:/inventario";
     }
+    // 📌 ALERTA DE INVENTARIO BAJO (para dashboard)
+@GetMapping("/alertasInventarioBajo")
+@ResponseBody
+public List<Map<String, Object>> obtenerAlertasInventarioBajo() {
+    List<Inventario> inventarios = inventarioService.obtenerTodo();
+    List<Map<String, Object>> alertas = new ArrayList<>();
+
+    for (Inventario inv : inventarios) {
+        if (inv.getStockActual() != null && inv.getStockMinimo() != null) {
+            // Si el stock actual es igual o menor al stock mínimo + 5
+            if (inv.getStockActual() <= inv.getStockMinimo()) {
+                Map<String, Object> alerta = new HashMap<>();
+                alerta.put("ID_INVENTARIO", inv.getIdInventario());
+                alerta.put("PRODUCTO", inv.getProducto().getNombreProducto());
+                alerta.put("STOCK_ACTUAL", inv.getStockActual());
+                alerta.put("STOCK_MINIMO", inv.getStockMinimo());
+                alerta.put("COSTO_UNITARIO", inv.getCostoUnitario());
+                alerta.put("PRECIO_VENTA", inv.getPrecioVenta());
+                alerta.put("CATEGORIA", inv.getProducto().getIdCategoria().getNombre());
+                alertas.add(alerta);
+            }
+        }
+    }
+
+    return alertas;
+}
 }

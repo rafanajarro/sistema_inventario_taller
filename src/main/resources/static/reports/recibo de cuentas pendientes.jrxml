@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="recibo de cuentas pendientes" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[ZGJvLiJDVUVOVEFTX1BFTkRJRU5URVMiIEFTICwyMDQsMTQxLDdjZDRlYzJmLWQyYmQtNDk0MC1h
+NjQ5LTgxZDk1YmE2OWFiYjs=]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sql server.jrdax"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#EEEFF0"/>
+		</conditionalStyle>
+	</style>
+	<style name="Table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineWidth="1.0" lineColor="#000000"/>
+			<leftPen lineWidth="1.0" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineColor="#000000"/>
+			<rightPen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#CACED0">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#D8D8D8"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="tableDataset" uuid="f13e6d36-5148-4ecc-bbe3-3035def80980">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+    c.ID_CUENTA,
+    s.NOMBRE_SERVICIO,
+    CONCAT(cli.NOMBRES, ' ', cli.APELLIDOS) AS CLIENTE,
+    c.MONTO_TOTAL,
+    c.MONTO_PAGADO,
+    c.SALDO_PENDIENTE,
+    c.ULTIMA_FECHA_PAGO,
+    c.ESTADO
+FROM CUENTAS_PENDIENTES c
+INNER JOIN SERVICIOS s ON c.ID_SERVICIO = s.ID_SERVICIO
+INNER JOIN CLIENTES cli ON c.ID_CLIENTE = cli.ID_CLIENTE
+ORDER BY c.ID_CUENTA DESC]]>
+	</queryString>
+	<field name="ID_CUENTA" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="ID_CUENTA"/>
+		<property name="com.jaspersoft.studio.field.label" value="ID_CUENTA"/>
+	</field>
+	<field name="NOMBRE_SERVICIO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOMBRE_SERVICIO"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOMBRE_SERVICIO"/>
+	</field>
+	<field name="CLIENTE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CLIENTE"/>
+		<property name="com.jaspersoft.studio.field.label" value="CLIENTE"/>
+	</field>
+	<field name="MONTO_TOTAL" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="MONTO_TOTAL"/>
+		<property name="com.jaspersoft.studio.field.label" value="MONTO_TOTAL"/>
+	</field>
+	<field name="MONTO_PAGADO" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="MONTO_PAGADO"/>
+		<property name="com.jaspersoft.studio.field.label" value="MONTO_PAGADO"/>
+	</field>
+	<field name="SALDO_PENDIENTE" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="SALDO_PENDIENTE"/>
+		<property name="com.jaspersoft.studio.field.label" value="SALDO_PENDIENTE"/>
+	</field>
+	<field name="ULTIMA_FECHA_PAGO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ULTIMA_FECHA_PAGO"/>
+		<property name="com.jaspersoft.studio.field.label" value="ULTIMA_FECHA_PAGO"/>
+	</field>
+	<field name="ESTADO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ESTADO"/>
+		<property name="com.jaspersoft.studio.field.label" value="ESTADO"/>
+	</field>
+	<title>
+		<band height="175" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="80" width="556" height="1" uuid="806ce5df-1219-4876-ae0c-ca7405b1f246">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="415" y="10" width="50" height="20" uuid="0f86baff-6386-4f3f-b3fe-2388707babe8"/>
+				<box rightPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Date:]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="465" y="10" width="84" height="20" uuid="bb10dbe1-0a4f-4722-9953-c163b63cf979"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="190" y="40" width="210" height="25" uuid="e622555d-198b-4ccd-a4a1-c59c53304058">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="19" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Servicios pagados]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20">
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="0" y="-50" width="69" height="20" forecolor="#000000" uuid="88ec37ba-936c-49d2-bde2-e69977538288">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="356ab45c-e135-4e8a-b6af-b5114e440f33"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID CUENTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="69" y="-50" width="69" height="20" forecolor="#000000" uuid="6d12fcd4-106e-49d9-a9af-88a0b8117f09">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5836a300-36ae-4524-9b9b-efa11850cd65"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SERVICIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="138" y="-50" width="69" height="20" forecolor="#000000" uuid="52dec8af-e508-4d69-9a90-76c565a5587e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="78c0e4ce-6151-4358-8712-cb5f05a438e9"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="207" y="-50" width="69" height="20" forecolor="#000000" uuid="d34668b0-bd4c-4440-8726-d273a07b9124">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dbf07803-0bdd-461c-9853-b555bc2a4f6d"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="276" y="-50" width="94" height="20" forecolor="#000000" uuid="1d29784b-9df1-447a-8174-411eb09328a1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5ca68cde-4a98-4941-b5ab-dab30b29f63d"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto pagado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="370" y="-50" width="69" height="20" forecolor="#000000" uuid="e0a9366f-3a76-4715-a805-9b21f791da9b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6bdcf8ca-85b6-4da7-b4e9-350fe6dc5d53"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SALDO PENDIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="439" y="-50" width="69" height="20" forecolor="#000000" uuid="d3beec9e-6af8-4406-b0e8-e284ff033971">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1f8b3f6f-2c5c-401f-a426-c59ee7002804"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ULTIMA FECHA PAGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="508" y="-50" width="69" height="20" forecolor="#000000" uuid="c9915c03-8d16-4f27-b241-99df88a43bff">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bd67a94c-ab7e-467a-9a88-bb8bd814f5b9"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESTADO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="0" y="-50" width="69" height="20" uuid="2fff9eb8-3ff5-45ff-8991-462acc85513c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="356ab45c-e135-4e8a-b6af-b5114e440f33"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ID_CUENTA}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="69" y="-50" width="69" height="20" uuid="8f32c1c4-3826-4555-ba33-95f01c4e07a5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5836a300-36ae-4524-9b9b-efa11850cd65"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOMBRE_SERVICIO}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="138" y="-50" width="69" height="20" uuid="543e5075-224a-41a3-acc8-ec3ae7e5d797">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="78c0e4ce-6151-4358-8712-cb5f05a438e9"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CLIENTE}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="207" y="-50" width="69" height="20" uuid="86de0a1e-d587-474a-a583-257b7abd03cc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dbf07803-0bdd-461c-9853-b555bc2a4f6d"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MONTO_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="276" y="-50" width="94" height="20" uuid="107e1b05-fd6f-4b58-b669-c3ffe9c06122">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5ca68cde-4a98-4941-b5ab-dab30b29f63d"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MONTO_PAGADO}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="370" y="-50" width="69" height="20" uuid="580270e4-e51b-4d4e-b603-f820b9bfb449">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6bdcf8ca-85b6-4da7-b4e9-350fe6dc5d53"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SALDO_PENDIENTE}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="439" y="-50" width="69" height="20" uuid="b4cc9db1-e551-45c5-8051-85d802307ba0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1f8b3f6f-2c5c-401f-a426-c59ee7002804"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ULTIMA_FECHA_PAGO}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="508" y="-50" width="69" height="20" uuid="127c8f22-7527-427b-9d3c-bffb6cd49902">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bd67a94c-ab7e-467a-9a88-bb8bd814f5b9"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ESTADO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="177"/>
+	</lastPageFooter>
+</jasperReport>
