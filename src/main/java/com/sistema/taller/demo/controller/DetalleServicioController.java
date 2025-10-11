@@ -1,16 +1,13 @@
 package com.sistema.taller.demo.controller;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 import com.sistema.taller.demo.model.DetalleServicio;
 import com.sistema.taller.demo.model.Inventario;
-import com.sistema.taller.demo.model.MovimientoInventario;
 import com.sistema.taller.demo.model.Producto;
 import com.sistema.taller.demo.model.Servicio;
-import com.sistema.taller.demo.model.Usuario;
 import com.sistema.taller.demo.repository.InventarioRepository;
 import com.sistema.taller.demo.repository.ServicioRepository;
 import com.sistema.taller.demo.service.DetalleServicioService;
@@ -21,12 +18,9 @@ import com.sistema.taller.demo.service.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
